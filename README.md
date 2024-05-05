@@ -15,13 +15,14 @@ Serão implantados os recursos abaixo:
 ## Usando repositório<a id="iniciorapido"></a>
 Existem duas maneiras de usar este repositório:
 
-- Use as actions para configurar seu ambiente de dados.
+- Use repos template final dougsll-datamaster, no qual utiliza desse repositório para criar o ambiente exploratório.
 - Reutilize módulos deste repositório como referência para seu projeto individuall.
 
 ## Requisitos<a id="requisitos"></a>
 Para executar o terraform, é necessário configurar as variaveis de ambiente abaixo:
 
+- Subscription_id
+- app_id
 
 ## Sobre Projeto dougsll-datamaster<a id="dougslldatamaster"></a>
-Este projeto Terraform foi desenvolvido para atender o projeto Data Master feito por Douglas leal
-Autor: Douglas Leal
+Este projeto Terraform foi desenvolvido para atender o projeto final dougsll-datamaster feito por Douglas leal.
