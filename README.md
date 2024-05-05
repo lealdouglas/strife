@@ -8,7 +8,7 @@ Serão implantados os recursos abaixo:
 
 ## Contents
 
-- [Início Rapido](#iniciorapido)
+- [Usando repositório](#iniciorapido)
 - [Requisitos](#requisitos)
 - [Sobre Projeto dougsll-datamaster](#dougslldatamaster)
 
