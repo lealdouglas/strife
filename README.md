@@ -1,23 +1,24 @@
 # Strife Terraform Setup
 
 Este projeto Terraform implanta recursos necessários para explorar um ambiente de plataforma de dados. 
+Seu principal objetivo está associado ao projeto final dougsll-datamaster no qual tem como objetivo entregar uma plataforma de dados simplificada para uso e eficiente.
 Serao implantados os recursos abaixo:
 
 - IMAGEM
 
 ## Contents
 
-- [Getting started](#getting-started)
-- [Autenticacao](#autenticacao)
+- [Início Rapido](#iniciorapido)
+- [Requisitos](#requisitos)
+- [Sobre Projeto dougsll-datamaster](#dougslldatamaster)
 
-## Getting started<a id="getting-started"></a>
+## Início Rapido<a id="iniciorapido"></a>
 tste
 
-## Authentication<a id="authentication"></a>
-teste
+## Requisitos<a id="requisitos"></a>
+Para executar o terraform, é necessário configurar as variaveis de ambiente abaixo:
 
 
-faz parte da solucao Data Platform 
-Desenvolvido para atender o projeto Data Master feito por Douglas leal
-
+## Sobre Projeto dougsll-datamaster<a id="dougslldatamaster"></a>
+Este projeto Terraform foi desenvolvido para atender o projeto Data Master feito por Douglas leal
 Autor: Douglas Leal
