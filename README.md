@@ -7,10 +7,10 @@ Serão implantados os recursos abaixo:
 - `Storage account Gen2 - Raw` - Storage account para incluir os arquivos de entrada.
 - `Workspace Databricks` - Workspace para explorar os dados e ambiente.
 - `Account Databricks` - unity catalog e usuarios sincronizados na workspace.
-- `Metastore Databricks` - Metastore e metadados para gestao do unity catalog assignados com a workspace criada.
+- `Metastore Databricks` - Metastore para gestao do unity catalog associado com a workspace criada.
 - `Storage Account Gen2 - Layers` - Storage account para uso das camadas: bronze, silver e gold.
 
-## Contents
+## Conteúdo
 
 - [Requisitos](#requisitos)
 - [Usando repositório](#iniciorapido)
