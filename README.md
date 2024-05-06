@@ -20,7 +20,8 @@ Serão implantados os recursos abaixo:
 
 ## Requisitos<a id="requisitos"></a>
 
-Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para que seja possível executar as `actions` de forma automatizada. Configurar as variaveis de ambiente abaixo em seu repositório:
+Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticar: `az login` via actions. 
+Configurar as variaveis de ambiente abaixo em seu repositório:
 
 - `SUBSCRIPTION_ID` - Subscricao no qual os recursos serao criados
 - `APPLICATION_ID` - ID da aplicacao do service principal principal
