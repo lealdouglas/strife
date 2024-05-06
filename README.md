@@ -1,8 +1,6 @@
 # Strife Terraform Setup
 
-Strife é um projeto Terraform que implanta recursos necessários para explorar um ambiente de plataforma de dados na azure.
-
-</p>Seu objetivo principal está associado ao projeto final [dougsll-datamaster](https://github.com/lealdouglas/dougsll-datamaster), no qual tem como objetivo entregar uma plataforma de dados simplificada para uso eficiente. 
+Strife é um projeto Terraform que implanta recursos necessários para explorar um ambiente de plataforma de dados na azure. Seu objetivo principal está associado ao projeto final [dougsll-datamaster](https://github.com/lealdouglas/dougsll-datamaster), no qual tem como objetivo entregar uma plataforma de dados simplificada para uso eficiente. 
 Serão implantados os recursos abaixo:
 
 - IMAGEM
