@@ -1,7 +1,3 @@
-variable "subscription_id" {
-  description = "Azure subscription id"
-}
-
 variable "project_code" {
   type    = string
   default = "strifedtm"
