@@ -11,6 +11,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    name: Strife Build
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -26,7 +27,7 @@ jobs:
           path: ${{ github.workspace }}//azsetup/lakehouse
 
   deploy-dev-infra:
-    name: Deploy Infra Dev
+    name: Strife Deploy infra-dev
     runs-on: ubuntu-latest
 
     defaults:
