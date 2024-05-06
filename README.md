@@ -16,7 +16,7 @@ Serão implantados os recursos abaixo:
 - [Usando repositório](#iniciorapido)
 - [Estrutura do repositório](#estrutura)
 - [Custos do projeto](#estrutura)
-- [Sobre Projeto dougsll-datamaster](#dougslldatamaster)
+- [Sobre Projeto](#dougslldatamaster)
 
 ## Requisitos<a id="requisitos"></a>
 
@@ -42,10 +42,10 @@ O repositório está organizado da seguinte forma:
 - `azureadb-uc\modules` - Configuracao do metastore e external object do unity catalog.
 - `cicd-pipelines` - Action para implementar terraform em seu ambiente azure.
 
-- [Custos do projeto](#custos)
+[Custos do projeto](#custos)
 
 O projeto é criado em seu ambiente azure, todo piloto ficou em torno de: R$0,00
 
-## Sobre Projeto dougsll-datamaster<a id="dougslldatamaster"></a>
+## Sobre Projeto<a id="dougslldatamaster"></a>
 
 Este projeto Terraform foi desenvolvido para atender o projeto final [dougsll-datamaster](https://github.com/lealdouglas/dougsll-datamaster) feito por Douglas leal.
