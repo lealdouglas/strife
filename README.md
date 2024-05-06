@@ -15,7 +15,7 @@ Serão implantados os recursos abaixo:
 
 Existem duas maneiras de usar este repositório:
 
-- Use repos template final dougsll-datamaster, no qual utiliza desse repositório para criar o ambiente exploratório.
+- Use repos template final [dougsll-datamaster](https://github.com/lealdouglas/dougsll-datamaster), no qual utiliza desse repositório para criar o ambiente exploratório.
 - Reutilize módulos deste repositório como referência para seu projeto individuall.
 
 ## Requisitos<a id="requisitos"></a>
@@ -27,4 +27,4 @@ Para executar o terraform, é necessário configurar as variaveis de ambiente ab
 
 ## Sobre Projeto dougsll-datamaster<a id="dougslldatamaster"></a>
 
-Este projeto Terraform foi desenvolvido para atender o projeto final dougsll-datamaster feito por Douglas leal.
+Este projeto Terraform foi desenvolvido para atender o projeto final [dougsll-datamaster](https://github.com/lealdouglas/dougsll-datamaster) feito por Douglas leal.
