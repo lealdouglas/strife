@@ -15,7 +15,7 @@ Serão implantados os recursos abaixo:
 - [Requisitos](#requisitos)
 - [Usando repositório](#iniciorapido)
 - [Estrutura do repositório](#estrutura)
-- [Configurar Service Principal](#configserviceprincipal)
+- [Configurar service principal](#configserviceprincipal)
 - [Custos do projeto](#estrutura)
 - [Sobre Projeto](#dougslldatamaster)
 
@@ -48,14 +48,14 @@ O repositório está organizado da seguinte forma:
 - `azureadb-uc\modules` - Configuracao do metastore e external object do unity catalog.
 - `cicd-pipelines` - Action para implementar terraform em seu ambiente azure.
 
-## Configurar Service Principal<a id="configserviceprincipal"></a>
-
-O projeto é criado em seu ambiente azure, todo piloto ficou em torno de: R$0,00
-
-[Custos do projeto](#custos)
+## Configurar service principal<a id="configserviceprincipal"></a>
 
 utilize o comando `az ad sp create-for-rbac -n spnstrifedtm --role Contributor --scopes /subscriptions/00000000-0000-0000-0000-000000000000` para configurar um usuário de servico na subscricao desejada. Esse SPN terá permissao para criar todo ambiente.
 mais em: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
+
+## Custos do projeto<a id="estrutura"></a>
+
+O projeto é criado em seu ambiente azure, todo piloto ficou em torno de: R$0,00
 
 ## Sobre Projeto<a id="dougslldatamaster"></a>
 
