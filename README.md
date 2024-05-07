@@ -21,7 +21,7 @@ Serão implantados os recursos abaixo:
 
 ## Requisitos<a id="requisitos"></a>
 
-Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticar `az login` via actions. Consulte [como configurar service principal](#configserviceprincipal) para criar seu usuário de aplicacao.
+Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticacao no uso das actions, `az login`. Consulte [como configurar service principal](#configserviceprincipal) para criar seu usuário de aplicacao.
 Com isso, Informe as variaveis de ambiente:
 
 - `ARM_TENANT_ID` - Tenant da subscricao.
@@ -48,8 +48,7 @@ O repositório está organizado da seguinte forma:
 
 ## Configurar service principal<a id="configserviceprincipal"></a>
 
-utilize o comando `az ad sp create-for-rbac -n spnstrifedtm --role Contributor --scopes /subscriptions/00000000-0000-0000-0000-000000000000` para configurar um usuário de servico na subscricao desejada. Esse SPN terá permissao para criar todo ambiente.
-Saiba mais: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
+Utilize o comando `az ad sp create-for-rbac -n spnstrifedtm --role Contributor --scopes /subscriptions/00000000-0000-0000-0000-000000000000` para configurar um usuário de servico na subscricao desejada. Altere 00000000-0000-0000-0000-000000000000 pelo ID da sua subscricao. Esse SPN terá permissao para criar todo ambiente. Saiba mais: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
 
 ## Custos do projeto<a id="estrutura"></a>
 
