@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: lakehouse
-          path: ${{ github.workspace }}//azsetup/lakehouse
+          path: lealdouglas/strife/azsetup/lakehouse
 
   deploy-dev-infra:
     name: Strife Deploy infra-dev
