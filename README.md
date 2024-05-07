@@ -51,7 +51,7 @@ O repositório está organizado da seguinte forma:
 ## Configurar service principal<a id="configserviceprincipal"></a>
 
 utilize o comando `az ad sp create-for-rbac -n spnstrifedtm --role Contributor --scopes /subscriptions/00000000-0000-0000-0000-000000000000` para configurar um usuário de servico na subscricao desejada. Esse SPN terá permissao para criar todo ambiente.
-mais em: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
+Saiba mais: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
 
 ## Custos do projeto<a id="estrutura"></a>
 
