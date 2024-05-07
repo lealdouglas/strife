@@ -102,10 +102,13 @@ resource "databricks_metastore_assignment" "this" {
 
 // Initialize provider at Azure account-level
 provider "databricks" {
-  alias      = "azure_account"
-  host       = "https://accounts.azuredatabricks.net"
-  account_id = var.account_id
-  auth_type  = "azure-cli"
+  alias               = "azure_account"
+  host                = "https://accounts.azuredatabricks.net"
+  account_id          = var.account_id
+  azure_client_id     = var.azure_client_id
+  azure_client_secret = var.azure_client_secret
+  azure_tenant_id     = var.azure_tenant_id
+  auth_type           = "azure-cli"
 }
 
 

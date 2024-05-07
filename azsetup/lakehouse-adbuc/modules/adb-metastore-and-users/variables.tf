@@ -15,6 +15,18 @@ variable "account_id" {
   description = "Azure databricks account id"
 }
 
+variable "azure_client_id" {
+  description = "Azure client id"
+}
+
+variable "azure_client_secret" {
+  description = "Azure client secret id"
+}
+
+variable "azure_tenant_id" {
+  description = "Azure Tenant id"
+}
+
 variable "prefix" {
   description = "Prefix to be used with resouce names"
 }

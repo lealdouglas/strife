@@ -30,3 +30,19 @@ variable "envv" {
   default = "dev"
 }
 
+variable "envv" {
+  type    = string
+  default = "dev"
+}
+
+variable "azure_client_id" {
+  description = "Azure client id"
+}
+
+variable "azure_client_secret" {
+  description = "Azure client secret id"
+}
+
+variable "azure_tenant_id" {
+  description = "Azure Tenant id"
+}
