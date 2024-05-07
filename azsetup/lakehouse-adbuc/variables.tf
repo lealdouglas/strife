@@ -30,11 +30,6 @@ variable "envv" {
   default = "dev"
 }
 
-variable "envv" {
-  type    = string
-  default = "dev"
-}
-
 variable "azure_client_id" {
   description = "Azure client id"
 }
