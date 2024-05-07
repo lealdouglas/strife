@@ -17,14 +17,17 @@ variable "account_id" {
 
 variable "azure_client_id" {
   description = "Azure client id"
+  default     = "000000"
 }
 
 variable "azure_client_secret" {
   description = "Azure client secret id"
+  default     = "000000"
 }
 
 variable "azure_tenant_id" {
   description = "Azure Tenant id"
+  default     = "000000"
 }
 
 variable "prefix" {
