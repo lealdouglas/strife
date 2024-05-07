@@ -4,7 +4,8 @@ name: Setup Lakehouse
 
 # Controls when the workflow will run
 on:
-  workflow_call:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: lakehouse
-          path: lealdouglas/strife/azsetup/lakehouse
+          path: ${{ github.workspace }}//azsetup/lakehouse
 
   deploy-dev-infra:
     name: Strife Deploy infra-dev
