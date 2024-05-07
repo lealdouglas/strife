@@ -23,7 +23,7 @@ Serão implantados os recursos abaixo:
 
 ## Requisitos<a id="requisitos"></a>
 
-Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticar `az login` via actions. Consulte [Configurar Service Principal](#configserviceprincipal) para criar seu usuário de aplicacao.
+Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticar `az login` via actions. Consulte [como configurar Service Principal](#configserviceprincipal) para criar seu usuário de aplicacao.
 Para isso, Informe as variaveis de ambiente:
 
 - `ARM_TENANT_ID` - Tenant da subscricao.
@@ -48,7 +48,7 @@ O repositório está organizado da seguinte forma:
 - `azureadb-uc\modules` - Configuracao do metastore e external object do unity catalog.
 - `cicd-pipelines` - Action para implementar terraform em seu ambiente azure.
 
-[Configurar Service Principal](#configserviceprincipal)
+## Configurar Service Principal<a id="configserviceprincipal"></a>
 
 O projeto é criado em seu ambiente azure, todo piloto ficou em torno de: R$0,00
 
