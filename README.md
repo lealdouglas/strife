@@ -15,13 +15,16 @@ Serão implantados os recursos abaixo:
 - [Requisitos](#requisitos)
 - [Usando repositório](#iniciorapido)
 - [Estrutura do repositório](#estrutura)
+- [Configurar Service Principal](#configserviceprincipal)
 - [Custos do projeto](#estrutura)
 - [Sobre Projeto](#dougslldatamaster)
 
+
+
 ## Requisitos<a id="requisitos"></a>
 
-Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticar `az login` via actions. 
-Para isso, informe as variaveis de ambiente:
+Para executar o terraform, é necessário ter uma `conta` na azure com apenas uma `subscricao` ativa, além disso, é importante ter um `service principal`, usuário de servico, para se autenticar `az login` via actions. Consulte [Configurar Service Principal](#configserviceprincipal) para criar seu usuário de aplicacao.
+Para isso, Informe as variaveis de ambiente:
 
 - `ARM_TENANT_ID` - Tenant da subscricao.
 - `ARM_SUBSCRIPTION_ID` - Subscricao no qual os recursos serao criados.
@@ -45,9 +48,14 @@ O repositório está organizado da seguinte forma:
 - `azureadb-uc\modules` - Configuracao do metastore e external object do unity catalog.
 - `cicd-pipelines` - Action para implementar terraform em seu ambiente azure.
 
-[Custos do projeto](#custos)
+[Configurar Service Principal](#configserviceprincipal)
 
 O projeto é criado em seu ambiente azure, todo piloto ficou em torno de: R$0,00
+
+[Custos do projeto](#custos)
+
+utilize o comando `az ad sp create-for-rbac -n spnstrifedtm --role Contributor --scopes /subscriptions/00000000-0000-0000-0000-000000000000` para configurar um usuário de servico na subscricao desejada. Esse SPN terá permissao para criar todo ambiente.
+mais em: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
 
 ## Sobre Projeto<a id="dougslldatamaster"></a>
 
