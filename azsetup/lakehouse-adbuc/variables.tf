@@ -1,6 +1,7 @@
 
 variable "account_id" {
   description = "Azure databricks account id"
+  default     = "00000000-0000-0000-0000-000000000000"
 }
 
 variable "aad_groups" {
