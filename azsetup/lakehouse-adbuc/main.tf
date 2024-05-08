@@ -48,6 +48,9 @@ module "metastore_and_users" {
   resource_group            = local.resource_group
   aad_groups                = var.aad_groups
   account_id                = var.account_id
+  azure_client_id           = var.azure_client_id
+  azure_client_secret       = var.azure_client_secret
+  azure_tenant_id           = var.azure_tenant_id
   prefix                    = local.suffix_concat
 }
 
