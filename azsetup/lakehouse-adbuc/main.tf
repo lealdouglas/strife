@@ -38,7 +38,7 @@ provider "databricks" {
   azure_client_id     = var.azure_client_id
   azure_client_secret = var.azure_client_secret
   azure_tenant_id     = var.azure_tenant_id
-  auth_type           = "azure-cli"
+  auth_type           = "azure-client-secret"
 }
 
 // Module creating UC metastore and adding users, groups and service principals to azure databricks account

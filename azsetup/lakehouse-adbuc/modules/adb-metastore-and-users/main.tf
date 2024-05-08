@@ -101,6 +101,7 @@ resource "databricks_metastore_assignment" "this" {
 }
 
 // Initialize provider at Azure account-level
+# Config: host=https://accounts.azuredatabricks.net, account_id=***, azure_client_secret=***, azure_client_id=000000, azure_tenant_id=000000. Env: ARM_CLIENT_SECRET, ARM_CLIENT_ID, ARM_TENANT_ID
 provider "databricks" {
   alias               = "azure_account"
   host                = "https://accounts.azuredatabricks.net"
@@ -108,7 +109,7 @@ provider "databricks" {
   azure_client_id     = var.azure_client_id
   azure_client_secret = var.azure_client_secret
   azure_tenant_id     = var.azure_tenant_id
-  auth_type           = "azure-cli"
+  auth_type           = "azure-client-secret"
 }
 
 
