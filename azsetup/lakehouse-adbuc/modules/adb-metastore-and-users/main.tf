@@ -35,10 +35,10 @@ provider "databricks" {
   host = local.databricks_workspace_host
 }
 
-resource "databricks_service_principal_role" "my_service_principal_instance_profile" {
-  service_principal_id = var.azure_client_id
-  role                 = "account_admin"
-}
+# resource "databricks_service_principal_role" "my_service_principal_instance_profile" {
+#   service_principal_id = var.azure_client_id
+#   role                 = "account_admin"
+# }
 
 // Create azure managed identity to be used by unity catalog metastore
 resource "azurerm_databricks_access_connector" "unity" {
