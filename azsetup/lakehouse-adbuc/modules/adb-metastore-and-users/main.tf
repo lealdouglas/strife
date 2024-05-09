@@ -218,6 +218,16 @@ resource "databricks_user_role" "account_admin" {
   depends_on = [databricks_group.this, databricks_user.this, databricks_service_principal.sp]
 }
 
+data "databricks_service_principal" "application" {
+  application_id = var.azure_client_id
+}
+
+resource "databricks_service_principal_role" "account_admin" {
+  service_principal_id = data.databricks_service_principal.application[0].id
+  role                 = "account_admin"
+}
+
+
 # resource "databricks_group" "this" {
 #   provider     = databricks.azure_account
 #   display_name = "account_unity_admin"
