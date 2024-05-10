@@ -219,6 +219,7 @@ resource "databricks_user_role" "account_admin" {
 }
 
 data "databricks_service_principal" "application" {
+  count          = 1
   application_id = var.azure_client_id
 }
 
