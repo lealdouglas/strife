@@ -35,10 +35,34 @@ provider "databricks" {
   host = local.databricks_workspace_host
 }
 
+// Initialize provider at Azure account-level
+# Config: host=https://accounts.azuredatabricks.net, account_id=***, azure_client_secret=***, azure_client_id=000000, azure_tenant_id=000000. Env: ARM_CLIENT_SECRET, ARM_CLIENT_ID, ARM_TENANT_ID
+provider "databricks" {
+  alias               = "azure_account"
+  host                = "https://accounts.azuredatabricks.net"
+  account_id          = var.account_id
+  azure_client_id     = var.azure_client_id
+  azure_client_secret = var.azure_client_secret
+  azure_tenant_id     = var.azure_tenant_id
+  auth_type           = "azure-client-secret"
+}
+
 # resource "databricks_service_principal_role" "my_service_principal_instance_profile" {
 #   service_principal_id = var.azure_client_id
 #   role                 = "account_admin"
 # }
+
+data "databricks_service_principal" "application" {
+  count          = 1
+  application_id = var.azure_client_id
+}
+
+resource "databricks_service_principal_role" "account_admin" {
+  count                = 1
+  service_principal_id = data.databricks_service_principal.application[0].id
+  role                 = "account_admin"
+}
+
 
 // Create azure managed identity to be used by unity catalog metastore
 resource "azurerm_databricks_access_connector" "unity" {
@@ -83,6 +107,7 @@ resource "databricks_metastore" "this" {
   azurerm_storage_account.unity_catalog.name)
   force_destroy = true
   # owner         = "account_unity_admin"
+  depends_on = [databricks_service_principal.application]
 }
 
 
@@ -105,17 +130,7 @@ resource "databricks_metastore_assignment" "this" {
   default_catalog_name = "hive_metastore"
 }
 
-// Initialize provider at Azure account-level
-# Config: host=https://accounts.azuredatabricks.net, account_id=***, azure_client_secret=***, azure_client_id=000000, azure_tenant_id=000000. Env: ARM_CLIENT_SECRET, ARM_CLIENT_ID, ARM_TENANT_ID
-provider "databricks" {
-  alias               = "azure_account"
-  host                = "https://accounts.azuredatabricks.net"
-  account_id          = var.account_id
-  azure_client_id     = var.azure_client_id
-  azure_client_secret = var.azure_client_secret
-  azure_tenant_id     = var.azure_tenant_id
-  auth_type           = "azure-client-secret"
-}
+
 
 
 locals {
@@ -218,16 +233,6 @@ resource "databricks_user_role" "account_admin" {
   depends_on = [databricks_group.this, databricks_user.this, databricks_service_principal.sp]
 }
 
-data "databricks_service_principal" "application" {
-  count          = 1
-  application_id = var.azure_client_id
-}
-
-resource "databricks_service_principal_role" "account_admin" {
-  count                = 1
-  service_principal_id = data.databricks_service_principal.application[0].id
-  role                 = "account_admin"
-}
 
 
 # resource "databricks_group" "this" {
