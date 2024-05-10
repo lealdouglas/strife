@@ -107,7 +107,7 @@ resource "databricks_metastore" "this" {
   azurerm_storage_account.unity_catalog.name)
   force_destroy = true
   # owner         = "account_unity_admin"
-  depends_on = [databricks_service_principal.application]
+  depends_on = [data.databricks_service_principal.application]
 }
 
 
