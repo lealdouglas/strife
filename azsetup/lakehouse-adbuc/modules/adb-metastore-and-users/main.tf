@@ -52,18 +52,6 @@ provider "databricks" {
 #   role                 = "account_admin"
 # }
 
-data "databricks_service_principal" "application" {
-  count          = 1
-  application_id = var.azure_client_id
-}
-
-resource "databricks_service_principal_role" "account_admin" {
-  provider             = databricks.azure_account
-  count                = 1
-  service_principal_id = data.databricks_service_principal.application[0].id
-  role                 = "account_admin"
-}
-
 
 // Create azure managed identity to be used by unity catalog metastore
 resource "azurerm_databricks_access_connector" "unity" {
@@ -108,7 +96,6 @@ resource "databricks_metastore" "this" {
   azurerm_storage_account.unity_catalog.name)
   force_destroy = true
   # owner         = "account_unity_admin"
-  depends_on = [data.databricks_service_principal.application]
 }
 
 
