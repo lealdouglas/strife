@@ -53,7 +53,6 @@ provider "databricks" {
 # }
 
 data "databricks_service_principal" "application" {
-  provider       = databricks.azure_account
   count          = 1
   application_id = var.azure_client_id
 }
