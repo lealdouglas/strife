@@ -223,6 +223,7 @@ data "databricks_service_principal" "application" {
 }
 
 resource "databricks_service_principal_role" "account_admin" {
+  count                = 1
   service_principal_id = data.databricks_service_principal.application[0].id
   role                 = "account_admin"
 }
