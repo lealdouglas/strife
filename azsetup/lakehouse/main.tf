@@ -33,7 +33,7 @@ resource "azurerm_resource_group" "this" {
 
 resource "azurerm_role_assignment" "assignment" {
   principal_id                      = data.azurerm_client_config.current.object_id
-  scope                             = data.azurerm_resource_group.this.id
+  scope                             = azurerm_resource_group.this.id
   role_definition_name              = "owner"
   skip_service_principal_aad_check  = true
 }
