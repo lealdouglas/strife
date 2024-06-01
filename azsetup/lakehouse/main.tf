@@ -21,7 +21,6 @@ data "azurerm_client_config" "current" {
 module "azure_aad_users" {
   source              = "./modules/azure-aad-users"
   suffix_concat       = local.suffix_concat
-  azure_client_id     = var.azure_client_id
 }
 
 # Create a resource group
@@ -37,6 +36,7 @@ resource "azurerm_role_assignment" "assignment" {
   role_definition_name              = "owner"
   skip_service_principal_aad_check  = true
 }
+
 
 # # Create a storage account gen2 in resource group
 # resource "azurerm_storage_account" "this" {

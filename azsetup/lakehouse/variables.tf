@@ -32,8 +32,3 @@ variable "aad_groups" {
   type        = list(string)
   default     = ["data_engineer"]
 }
-
-variable "azure_client_id" {
-  description = "Azure client id"
-  default     = "000000"
-}
