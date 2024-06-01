@@ -31,6 +31,13 @@ resource "azurerm_resource_group" "this" {
   tags     = local.tags
 }
 
+resource "azurerm_role_assignment" "assignment" {
+  principal_id                      = data.azurerm_client_config.current.object_id
+  scope                             = data.azurerm_resource_group.this.id
+  role_definition_name              = "owner"
+  skip_service_principal_aad_check  = true
+}
+
 # # Create a storage account gen2 in resource group
 # resource "azurerm_storage_account" "this" {
 #   name                      = "sta${local.suffix_concat}raw"
