@@ -40,3 +40,12 @@ resource "azuread_group_member" "user4_member" {
   group_object_id  = azuread_group.data_engineers.id
   member_object_id = azuread_service_principal.this.object_id
 }
+
+data "azurerm_subscription" "current" {}
+
+resource "azurerm_role_assignment" "assignment" {
+  principal_id                      = azuread_group.data_engineers.object_id
+  scope                             = data.azurerm_subscription.current.id
+  role_definition_name              = "owner"
+  skip_service_principal_aad_check  = true
+}
