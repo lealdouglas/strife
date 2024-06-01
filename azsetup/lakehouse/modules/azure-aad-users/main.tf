@@ -16,7 +16,7 @@ resource "azuread_group" "account_unity_admin" {
 }
 
 resource "azuread_application" "this" {
-  display_name = "spn${var.suffix_concat}"
+  display_name = "spnfake${var.suffix_concat}"
   owners       = [data.azurerm_client_config.current.object_id]
 }
 
