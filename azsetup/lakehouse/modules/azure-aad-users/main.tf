@@ -42,6 +42,6 @@ resource "azuread_group_member" "user4_member" {
 }
 
 resource "azuread_group_member" "user5_member" {
-  group_object_id  = azuread_group.account_unity_admin.id
+  group_object_id  = azuread_group.data_engineers.id
   member_object_id = var.azure_client_id
 }

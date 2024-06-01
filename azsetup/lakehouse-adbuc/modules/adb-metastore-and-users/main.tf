@@ -197,7 +197,7 @@ resource "databricks_service_principal" "sp" {
 }
 
 locals {
-  account_admin_members = toset(flatten([for group in values(data.azuread_group.this) : [group.display_name == "account_unity_admin" ? group.members : []]]))
+  account_admin_members = toset(flatten([for group in values(data.azuread_group.this) : [group.display_name == "data_engineers" ? group.members : []]]))
 }
 
 # Extract information about real account admins users
