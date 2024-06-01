@@ -19,8 +19,9 @@ data "azurerm_client_config" "current" {
 
 // Module creating UC metastore and adding users, groups and service principals to azure databricks account
 module "azure_aad_users" {
-  source        = "./modules/azure-aad-users"
-  suffix_concat = local.suffix_concat
+  source              = "./modules/azure-aad-users"
+  suffix_concat       = local.suffix_concat
+  azure_client_id     = var.azure_client_id
 }
 
 # Create a resource group
