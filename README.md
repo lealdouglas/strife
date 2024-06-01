@@ -52,6 +52,14 @@ O repositório está organizado da seguinte forma:
 
 Utilize o comando `az ad sp create-for-rbac -n spnstrifedtm --role Contributor --scopes /subscriptions/00000000-0000-0000-0000-000000000000` para configurar um usuário de servico na subscricao desejada. Altere 00000000-0000-0000-0000-000000000000 pelo ID da sua subscricao, ao executar o comando, copie o output em seu bloco de notas. Use appId para ARM_SUBSCRIPTION_ID; Use password para ARM_CLIENT_SECRET. Saiba mais: [az-ad-sp-create-for-rbac](https://learn.microsoft.com/pt-br/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac)
 
+IMPORTANTE: para conseguir configurar unity catalog e criar usuarios/grupos no aad, o SPN criado precisa ser Global Administrator, para isso:
+1. selecione o recurso, diretorio padrao (active directory) 
+2. selecione no canto esquerdo, Roles and administrators 
+3. busque por "Global Administrator" 
+4. clique em Add assignments 
+5. busque pelo seu SPN 
+6. clique em add
+
 ## Custos do projeto<a id="estrutura"></a>
 
 O projeto é criado em seu ambiente azure, todo piloto ficou em torno de: R$0,00
