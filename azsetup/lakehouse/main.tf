@@ -30,34 +30,27 @@ resource "azurerm_resource_group" "this" {
   tags     = local.tags
 }
 
-resource "azurerm_role_assignment" "assignment" {
-  principal_id                      = data.azurerm_client_config.current.object_id
-  scope                             = azurerm_resource_group.this.id
-  role_definition_name              = "owner"
-  skip_service_principal_aad_check  = true
+
+# Create a storage account gen2 in resource group
+resource "azurerm_storage_account" "this" {
+  name                      = "sta${local.suffix_concat}raw"
+  resource_group_name       = azurerm_resource_group.this.name
+  location                  = var.location
+  account_tier              = "Standard"
+  account_replication_type  = "LRS"
+  account_kind              = "StorageV2"
+  access_tier               = "Hot"
+  is_hns_enabled            = true
+  shared_access_key_enabled = true
+  min_tls_version           = "TLS1_2"
+  tags                      = local.tags
 }
 
-
-# # Create a storage account gen2 in resource group
-# resource "azurerm_storage_account" "this" {
-#   name                      = "sta${local.suffix_concat}raw"
-#   resource_group_name       = azurerm_resource_group.this.name
-#   location                  = var.location
-#   account_tier              = "Standard"
-#   account_replication_type  = "LRS"
-#   account_kind              = "StorageV2"
-#   access_tier               = "Hot"
-#   is_hns_enabled            = true
-#   shared_access_key_enabled = true
-#   min_tls_version           = "TLS1_2"
-#   tags                      = local.tags
-# }
-
-# resource "azurerm_databricks_workspace" "this" {
-#   location                    = azurerm_resource_group.this.location
-#   resource_group_name         = azurerm_resource_group.this.name
-#   name                        = "adb${local.suffix_concat}"
-#   sku                         = "premium"
-#   managed_resource_group_name = "rsg${local.suffix_concat}-workspace"
-#   tags                        = local.tags
-# }
+resource "azurerm_databricks_workspace" "this" {
+  location                    = azurerm_resource_group.this.location
+  resource_group_name         = azurerm_resource_group.this.name
+  name                        = "adb${local.suffix_concat}"
+  sku                         = "premium"
+  managed_resource_group_name = "rsg${local.suffix_concat}-workspace"
+  tags                        = local.tags
+}
