@@ -41,14 +41,7 @@ resource "azuread_group_member" "user4_member" {
   member_object_id = azuread_service_principal.this.object_id
 }
 
-resource "azuread_service_principal" "manage" {
-  client_id                    = var.azure_client_id
-  app_role_assignment_required = false
-  owners                       = [data.azurerm_client_config.current.object_id]
-  account_enabled              = true
-}
-
 resource "azuread_group_member" "user5_member" {
   group_object_id  = azuread_group.account_unity_admin.id
-  member_object_id = azuread_service_principal.manage.object_id
+  member_object_id = var.azure_client_id
 }
