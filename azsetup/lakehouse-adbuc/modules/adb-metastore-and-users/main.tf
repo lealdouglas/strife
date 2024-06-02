@@ -88,6 +88,9 @@ resource "azurerm_role_assignment" "mi_data_contributor" {
   principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
 }
 
+data "azurerm_client_config" "current" {
+}
+
 // Making all users on account_unity_admin group as databricks account admin
 resource "databricks_user_role" "account_admin_spn" {
   provider   = databricks.azure_account
