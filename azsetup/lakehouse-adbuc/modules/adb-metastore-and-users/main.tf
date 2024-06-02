@@ -197,7 +197,7 @@ resource "databricks_service_principal" "sp" {
 }
 
 locals {
-  account_admin_members = toset(flatten([for group in values(data.azuread_group.this) : [group.display_name == "data_engineers" ? group.members : []]]))
+  account_admin_members = toset(flatten([for group in values(data.azuread_group.this) : [group.display_name == "account_unity_admin" ? group.members : []]]))
 }
 
 # Extract information about real account admins users
@@ -220,16 +220,3 @@ resource "databricks_user_role" "account_admin" {
   role       = "account_admin"
   depends_on = [databricks_group.this, databricks_user.this, databricks_service_principal.sp]
 }
-
-
-
-# resource "databricks_group" "this" {
-#   provider     = databricks.azure_account
-#   display_name = "account_unity_admin"
-# }
-
-# resource "databricks_group_member" "vip_member" {
-#   provider  = databricks.azure_account
-#   group_id  = databricks_group.this.id
-#   member_id = data.databricks_user.this.id
-# }
