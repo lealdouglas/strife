@@ -47,6 +47,15 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
+
+// Making all users on account_unity_admin group as databricks account admin
+resource "databricks_user_role" "account_admin_spn" {
+  provider   = databricks.azure_account
+  user_id    = data.azurerm_client_config.current.object_id
+  role       = "account_admin"
+}
+
+
 # resource "databricks_service_principal_role" "my_service_principal_instance_profile" {
 #   service_principal_id = var.azure_client_id
 #   role                 = "account_admin"
@@ -61,6 +70,7 @@ resource "azurerm_databricks_access_connector" "unity" {
   identity {
     type = "SystemAssigned"
   }
+  depends_on = [ databricks_user_role.account_admin_spn ]
 }
 
 // Create a storage account to be used by unity catalog metastore as root storage
@@ -72,6 +82,7 @@ resource "azurerm_storage_account" "unity_catalog" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   is_hns_enabled           = true
+  depends_on = [ databricks_user_role.account_admin_spn ]
 }
 
 // Create a container in storage account to be used by unity catalog metastore as root storage
@@ -89,13 +100,6 @@ resource "azurerm_role_assignment" "mi_data_contributor" {
 }
 
 data "azurerm_client_config" "current" {
-}
-
-// Making all users on account_unity_admin group as databricks account admin
-resource "databricks_user_role" "account_admin_spn" {
-  provider   = databricks.azure_account
-  user_id    = data.azurerm_client_config.current.object_id
-  role       = "account_admin"
 }
 
 // Create the first unity catalog metastore
