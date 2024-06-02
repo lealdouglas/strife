@@ -88,6 +88,13 @@ resource "azurerm_role_assignment" "mi_data_contributor" {
   principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
 }
 
+// Making all users on account_unity_admin group as databricks account admin
+resource "databricks_user_role" "account_admin_spn" {
+  provider   = databricks.azure_account
+  user_id    = data.azurerm_client_config.current.object_id
+  role       = "account_admin"
+}
+
 // Create the first unity catalog metastore
 resource "databricks_metastore" "this" {
   name = "primary"
@@ -96,6 +103,7 @@ resource "databricks_metastore" "this" {
   azurerm_storage_account.unity_catalog.name)
   force_destroy = true
   # owner         = "account_unity_admin"
+  depends_on = [ databricks_user_role.account_admin_spn ]
 }
 
 
