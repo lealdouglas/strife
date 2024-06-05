@@ -73,7 +73,6 @@ resource "azurerm_storage_account" "unity_catalog" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   is_hns_enabled           = true
-  depends_on = [ databricks_user_role.account_admin_spn ]
 }
 
 // Create a container in storage account to be used by unity catalog metastore as root storage
@@ -101,7 +100,6 @@ resource "databricks_metastore" "this" {
   azurerm_storage_account.unity_catalog.name)
   force_destroy = true
   # owner         = "account_unity_admin"
-  depends_on = [ databricks_user_role.account_admin_spn ]
 }
 
 
