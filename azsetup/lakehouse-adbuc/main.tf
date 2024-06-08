@@ -271,43 +271,36 @@ resource "databricks_sql_table" "thing" {
   comment = "this table is managed by terraform"
 }
 
-
-variable "cluster_name" {
-  description = "A name for the cluster."
-  type        = string
-  default     = "My Cluster"
-}
-
-variable "cluster_autotermination_minutes" {
-  description = "How many minutes before automatically terminating due to inactivity."
-  type        = number
-  default     = 60
-}
-
-variable "cluster_num_workers" {
-  description = "The number of workers."
-  type        = number
-  default     = 1
-}
-
-# Create the cluster with the "smallest" amount
-# of resources allowed.
 data "databricks_node_type" "smallest" {
   local_disk = true
 }
 
-# Use the latest Databricks Runtime
-# Long Term Support (LTS) version.
 data "databricks_spark_version" "latest_lts" {
   long_term_support = true
 }
 
 resource "databricks_cluster" "this" {
-  cluster_name            = var.cluster_name
-  node_type_id            = data.databricks_node_type.smallest.id
+  cluster_name            = "dtmaster"
   spark_version           = data.databricks_spark_version.latest_lts.id
-  autotermination_minutes = var.cluster_autotermination_minutes
-  num_workers             = var.cluster_num_workers
+  node_type_id            = data.databricks_node_type.smallest.id
+  autotermination_minutes = 10
+
+  spark_conf = {
+    # Single-node
+    "spark.databricks.cluster.profile" : "singleNode"
+    "spark.master" : "local[*]"
+  }
+   azure_attributes {
+    availability       = "SPOT_WITH_FALLBACK_AZURE"
+    first_on_demand    = 1
+    spot_bid_max_price = -1
+  }
+  #   library {
+  #   pypi {
+  #     package = "fbprophet==0.6"
+  #     // repo can also be specified here
+  #   }
+  # }
 }
 
 output "cluster_url" {
