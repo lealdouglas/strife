@@ -244,33 +244,6 @@ resource "databricks_grants" "gold" {
   # }
 }
 
-resource "databricks_sql_table" "thing" {
-  name               = "table_config_ingest"
-  catalog_name       = databricks_catalog.dev.name
-  schema_name        = databricks_schema.bronze.name
-  table_type         = "MANAGED"
-  data_source_format = "DELTA"
-  storage_location   = ""
-
-  column {
-    name = "SCHEMA"
-    type = "STRING"
-  }
-  column {
-    name = "TABLE"
-    type = "STRING"
-  }
-  column {
-    name = "DOMAIN"
-    type = "STRING"
-  }
-  column {
-    name = "REQUESTER"
-    type = "STRING"
-  }
-  comment = "this table is managed by terraform"
-}
-
 data "databricks_node_type" "smallest" {
   local_disk = true
 }
@@ -305,4 +278,32 @@ resource "databricks_cluster" "this" {
 
 output "cluster_url" {
  value = databricks_cluster.this.url
+}
+
+resource "databricks_sql_table" "thing" {
+  name               = "table_config_ingest"
+  catalog_name       = databricks_catalog.dev.name
+  schema_name        = databricks_schema.bronze.name
+  table_type         = "MANAGED"
+  data_source_format = "DELTA"
+  cluster_id         = databricks_cluster.this.id
+
+  column {
+    name = "SCHEMA"
+    type = "STRING"
+  }
+  column {
+    name = "TABLE"
+    type = "STRING"
+  }
+  column {
+    name = "DOMAIN"
+    type = "STRING"
+  }
+  column {
+    name = "REQUESTER"
+    type = "STRING"
+  }
+  comment = "this table is managed by terraform"
+  depends_on = [ databricks_cluster.this ]
 }
