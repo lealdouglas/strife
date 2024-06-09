@@ -261,11 +261,12 @@ resource "databricks_cluster" "this" {
   num_workers             = 1
   data_security_mode      = "USER_ISOLATION"
 
-  # spark_conf = {
-  #   # Single-node
-  #   "spark.databricks.cluster.profile" : "singleNode"
-  #   "spark.master" : "local[*]"
-  # }
+  spark_conf = {
+    # Single-node
+    # "spark.databricks.cluster.profile" : "singleNode"
+    # "spark.master" : "local[*]"
+    "spark.databricks.sql.initial.catalog.namespace" : "dev_catalog"
+  }
   # custom_tags = {
   #   "ResourceClass" = "SingleNode"
   # }
