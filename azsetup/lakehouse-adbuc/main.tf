@@ -146,7 +146,6 @@ resource "databricks_external_location" "dev_location" {
       azurerm_storage_container.dev_catalog.name,
       module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
   credential_name   = databricks_storage_credential.external_mi.id
-  metastore_id      = module.metastore_and_users.metastore_id
   # owner           = "data_engineer"
   comment    = "External location used by dev catalog as root storage"
   depends_on = [databricks_storage_credential.external_mi]
