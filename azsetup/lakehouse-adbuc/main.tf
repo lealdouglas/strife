@@ -252,12 +252,14 @@ data "databricks_spark_version" "latest_lts" {
   long_term_support = true
 }
 
+# 14.3.x-scala2.12
 resource "databricks_cluster" "this" {
   cluster_name            = "dtmaster"
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
   num_workers             = 0
+  data_security_mode      = "Shared"
 
   spark_conf = {
     # Single-node
@@ -278,6 +280,15 @@ resource "databricks_cluster" "this" {
   #     // repo can also be specified here
   #   }
   # }
+}
+
+resource "databricks_permissions" "cluster_usage" {
+  cluster_id = databricks_cluster.this.id
+
+  access_control {
+    group_name       = "data_engineer"
+    permission_level = "CAN_MANAGE"
+  }
 }
 
 output "cluster_url" {
