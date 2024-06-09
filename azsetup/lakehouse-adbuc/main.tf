@@ -131,7 +131,7 @@ resource "databricks_storage_credential" "external_mi" {
   azure_managed_identity {
     access_connector_id = module.metastore_and_users.azurerm_databricks_access_connector_id
   }
-  owner      = "data_engineer"
+  # owner      = "data_engineer"
   comment    = "Storage credential for all external locations"
   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
 }
@@ -141,12 +141,12 @@ resource "databricks_storage_credential" "external_mi" {
 // Contact your metastore administrator to grant you the privilege to this credential.
 // abfss://dev-catalog@starsgdtmstrdougslldevuc.dfs.core.windows.net
 resource "databricks_external_location" "dev_location" {
-  name = "dev-catalog-external-location"
-  url = format("abfss://%s@%s.dfs.core.windows.net/",
-    azurerm_storage_container.dev_catalog.name,
-  module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
-  credential_name = databricks_storage_credential.external_mi.id
-  owner           = "data_engineer"
+  name            = "dev-catalog-external-location"
+  url             = format("abfss://%s@%s.dfs.core.windows.net/",
+      azurerm_storage_container.dev_catalog.name,
+      module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
+  credential_name   = databricks_storage_credential.external_mi.id
+  # owner           = "data_engineer"
   comment    = "External location used by dev catalog as root storage"
   depends_on = [databricks_storage_credential.external_mi]
 }
@@ -156,7 +156,7 @@ resource "databricks_catalog" "dev" {
   metastore_id = module.metastore_and_users.metastore_id
   name         = "dev_catalog"
   comment      = "this catalog is for dev env"
-  owner        = "data_engineer"
+  # owner        = "data_engineer"
   storage_root = databricks_external_location.dev_location.url
   properties = {
     purpose = "dev"
@@ -185,8 +185,8 @@ resource "databricks_grants" "dev_catalog" {
 resource "databricks_schema" "bronze" {
   catalog_name = databricks_catalog.dev.id
   name         = "bronze"
-  owner        = "data_engineer"
-  comment = "this database is for bronze layer tables/views"
+  # owner        = "data_engineer"
+  comment      = "this database is for bronze layer tables/views"
 }
 
 // Grants on bronze schema
@@ -202,8 +202,8 @@ resource "databricks_grants" "bronze" {
 resource "databricks_schema" "silver" {
   catalog_name = databricks_catalog.dev.id
   name         = "silver"
-  owner        = "data_engineer"
-  comment = "this database is for silver layer tables/views"
+  # owner        = "data_engineer"
+  comment      = "this database is for silver layer tables/views"
 }
 
 // Grants on silver schema
@@ -223,8 +223,8 @@ resource "databricks_grants" "silver" {
 resource "databricks_schema" "gold" {
   catalog_name = databricks_catalog.dev.id
   name         = "gold"
-  owner        = "data_engineer"
-  comment = "this database is for gold layer tables/views"
+  # owner        = "data_engineer"
+  comment        = "this database is for gold layer tables/views"
 }
 
 // Grants on gold schema
@@ -268,7 +268,7 @@ resource "databricks_grants" "gold" {
 #     # Single-node
 #     # "spark.databricks.cluster.profile" : "singleNode"
 #     # "spark.master" : "local[*]"
-#     "spark.databricks.sql.initial.catalog.namespace" : "dev-catalog"
+#     "spark.databricks.sql.initial.catalog.namespace" : "dev_catalog"
 #   }
 #   # custom_tags = {
 #   #   "ResourceClass" = "SingleNode"
