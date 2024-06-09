@@ -131,7 +131,7 @@ resource "databricks_storage_credential" "external_mi" {
   azure_managed_identity {
     access_connector_id = module.metastore_and_users.azurerm_databricks_access_connector_id
   }
-  # owner      = "account_unity_admin"
+  owner      = "data_engineer"
   comment    = "Storage credential for all external locations"
   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
 }
@@ -146,7 +146,7 @@ resource "databricks_external_location" "dev_location" {
     azurerm_storage_container.dev_catalog.name,
   module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
   credential_name = databricks_storage_credential.external_mi.id
-  # owner           = "account_unity_admin"
+  owner           = "data_engineer"
   comment    = "External location used by dev catalog as root storage"
   depends_on = [databricks_storage_credential.external_mi]
 }
@@ -156,7 +156,7 @@ resource "databricks_catalog" "dev" {
   metastore_id = module.metastore_and_users.metastore_id
   name         = "dev_catalog"
   comment      = "this catalog is for dev env"
-  # owner        = "account_unity_admin"
+  owner        = "data_engineer"
   storage_root = databricks_external_location.dev_location.url
   properties = {
     purpose = "dev"
@@ -185,7 +185,7 @@ resource "databricks_grants" "dev_catalog" {
 resource "databricks_schema" "bronze" {
   catalog_name = databricks_catalog.dev.id
   name         = "bronze"
-  # owner        = "account_unity_admin"
+  owner        = "data_engineer"
   comment = "this database is for bronze layer tables/views"
 }
 
@@ -202,7 +202,7 @@ resource "databricks_grants" "bronze" {
 resource "databricks_schema" "silver" {
   catalog_name = databricks_catalog.dev.id
   name         = "silver"
-  # owner        = "account_unity_admin"
+  owner        = "data_engineer"
   comment = "this database is for silver layer tables/views"
 }
 
@@ -223,7 +223,7 @@ resource "databricks_grants" "silver" {
 resource "databricks_schema" "gold" {
   catalog_name = databricks_catalog.dev.id
   name         = "gold"
-  # owner        = "account_unity_admin"
+  owner        = "data_engineer"
   comment = "this database is for gold layer tables/views"
 }
 
@@ -244,82 +244,90 @@ resource "databricks_grants" "gold" {
   # }
 }
 
-data "databricks_node_type" "smallest" {
-  local_disk = true
-}
 
-data "databricks_spark_version" "latest_lts" {
-  long_term_support = true
-}
 
-# 14.3.x-scala2.12
-resource "databricks_cluster" "this" {
-  cluster_name            = "dtmaster"
-  spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
-  node_type_id            = data.databricks_node_type.smallest.id
-  autotermination_minutes = 10
-  num_workers             = 1
-  data_security_mode      = "USER_ISOLATION"
 
-  spark_conf = {
-    # Single-node
-    # "spark.databricks.cluster.profile" : "singleNode"
-    # "spark.master" : "local[*]"
-    "spark.databricks.sql.initial.catalog.namespace" : "dev_catalog"
-  }
-  # custom_tags = {
-  #   "ResourceClass" = "SingleNode"
-  # }
-   azure_attributes {
-    availability       = "SPOT_WITH_FALLBACK_AZURE"
-    first_on_demand    = 1
-    spot_bid_max_price = -1
-  }
-  #   library {
-  #   pypi {
-  #     package = "fbprophet==0.6"
-  #     // repo can also be specified here
-  #   }
-  # }
-}
+# data "databricks_node_type" "smallest" {
+#   local_disk = true
+# }
 
-resource "databricks_permissions" "cluster_usage" {
-  cluster_id = databricks_cluster.this.id
+# data "databricks_spark_version" "latest_lts" {
+#   long_term_support = true
+# }
 
-  access_control {
-    group_name       = "data_engineer"
-    permission_level = "CAN_MANAGE"
-  }
-}
+# # 14.3.x-scala2.12
+# resource "databricks_cluster" "this" {
+#   cluster_name            = "dtmaster"
+#   spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
+#   node_type_id            = data.databricks_node_type.smallest.id
+#   autotermination_minutes = 10
+#   num_workers             = 1
+#   data_security_mode      = "USER_ISOLATION"
 
-output "cluster_url" {
- value = databricks_cluster.this.url
-}
+#   spark_conf = {
+#     # Single-node
+#     # "spark.databricks.cluster.profile" : "singleNode"
+#     # "spark.master" : "local[*]"
+#     "spark.databricks.sql.initial.catalog.namespace" : "dev-catalog"
+#   }
+#   # custom_tags = {
+#   #   "ResourceClass" = "SingleNode"
+#   # }
+#    azure_attributes {
+#     availability       = "SPOT_WITH_FALLBACK_AZURE"
+#     first_on_demand    = 1
+#     spot_bid_max_price = -1
+#   }
+#   #   library {
+#   #   pypi {
+#   #     package = "fbprophet==0.6"
+#   #     // repo can also be specified here
+#   #   }
+#   # }
+# }
 
-resource "databricks_sql_table" "thing" {
-  name               = "table_config_ingest"
-  catalog_name       = databricks_catalog.dev.name
-  schema_name        = databricks_schema.bronze.name
-  table_type         = "MANAGED"
-  data_source_format = "DELTA"
-  cluster_id         = databricks_cluster.this.id
+# resource "databricks_permissions" "cluster_usage" {
+#   cluster_id = databricks_cluster.this.id
 
-  column {
-    name = "SCHEMA"
-    type = "STRING"
-  }
-  column {
-    name = "TABLE"
-    type = "STRING"
-  }
-  column {
-    name = "DOMAIN"
-    type = "STRING"
-  }
-  column {
-    name = "REQUESTER"
-    type = "STRING"
-  }
-  comment = "this table is managed by terraform"
-  depends_on = [ databricks_cluster.this ]
-}
+#   access_control {
+#     group_name       = "data_engineer"
+#     permission_level = "CAN_MANAGE"
+#   }
+
+#   access_control {
+#     group_name       = "users"
+#     permission_level = "CAN_MANAGE"
+#   }
+# }
+
+# output "cluster_url" {
+#  value = databricks_cluster.this.url
+# }
+
+# resource "databricks_sql_table" "thing" {
+#   name               = "table_config_ingest"
+#   catalog_name       = databricks_catalog.dev.name
+#   schema_name        = databricks_schema.bronze.name
+#   table_type         = "MANAGED"
+#   data_source_format = "DELTA"
+#   cluster_id         = databricks_cluster.this.id
+
+#   column {
+#     name = "SCHEMA"
+#     type = "STRING"
+#   }
+#   column {
+#     name = "TABLE"
+#     type = "STRING"
+#   }
+#   column {
+#     name = "DOMAIN"
+#     type = "STRING"
+#   }
+#   column {
+#     name = "REQUESTER"
+#     type = "STRING"
+#   }
+#   comment = "this table is managed by terraform"
+#   depends_on = [ databricks_cluster.this ]
+# }
