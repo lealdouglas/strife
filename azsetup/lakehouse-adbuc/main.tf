@@ -258,17 +258,17 @@ resource "databricks_cluster" "this" {
   spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
-  num_workers             = 0
+  num_workers             = 1
   data_security_mode      = "USER_ISOLATION"
 
-  spark_conf = {
-    # Single-node
-    "spark.databricks.cluster.profile" : "singleNode"
-    "spark.master" : "local[*]"
-  }
-  custom_tags = {
-    "ResourceClass" = "SingleNode"
-  }
+  # spark_conf = {
+  #   # Single-node
+  #   "spark.databricks.cluster.profile" : "singleNode"
+  #   "spark.master" : "local[*]"
+  # }
+  # custom_tags = {
+  #   "ResourceClass" = "SingleNode"
+  # }
    azure_attributes {
     availability       = "SPOT_WITH_FALLBACK_AZURE"
     first_on_demand    = 1
