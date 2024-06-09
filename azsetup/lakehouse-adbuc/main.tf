@@ -171,6 +171,10 @@ resource "databricks_grants" "dev_catalog" {
     principal  = "data_engineer"
     privileges = ["USE_CATALOG"]
   }
+  grant {
+    principal  = "users"
+    privileges = ["USE_CATALOG"]
+  }
   # grant {
   #   principal  = "data_scientist"
   #   privileges = ["USE_CATALOG"]
@@ -196,6 +200,10 @@ resource "databricks_grants" "bronze" {
     principal  = "data_engineer"
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
+  grant {
+    principal  = "users"
+    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
+  }
 }
 
 // Create schema for silver datalake layer in dev env.
@@ -213,10 +221,10 @@ resource "databricks_grants" "silver" {
     principal  = "data_engineer"
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
-  # grant {
-  #   principal  = "data_scientist"
-  #   privileges = ["USE_SCHEMA", "SELECT"]
-  # }
+  grant {
+    principal  = "users"
+    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
+  }
 }
 
 // Create schema for gold datalake layer in dev env.
@@ -234,10 +242,10 @@ resource "databricks_grants" "gold" {
     principal  = "data_engineer"
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
-  # grant {
-  #   principal  = "data_scientist"
-  #   privileges = ["USE_SCHEMA", "SELECT"]
-  # }
+  grant {
+    principal  = "users"
+    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
+  }
   # grant {
   #   principal  = "data_analyst"
   #   privileges = ["USE_SCHEMA", "SELECT"]
