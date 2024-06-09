@@ -264,6 +264,9 @@ resource "databricks_cluster" "this" {
     "spark.databricks.cluster.profile" : "singleNode"
     "spark.master" : "local[*]"
   }
+  custom_tags = {
+    "ResourceClass" = "SingleNode"
+  }
    azure_attributes {
     availability       = "SPOT_WITH_FALLBACK_AZURE"
     first_on_demand    = 1
