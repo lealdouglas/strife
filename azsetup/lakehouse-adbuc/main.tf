@@ -255,11 +255,11 @@ data "databricks_spark_version" "latest_lts" {
 # 14.3.x-scala2.12
 resource "databricks_cluster" "this" {
   cluster_name            = "dtmaster"
-  spark_version           = data.databricks_spark_version.latest_lts.id
+  spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
   num_workers             = 0
-  data_security_mode      = "Shared"
+  data_security_mode      = "USER_ISOLATION"
 
   spark_conf = {
     # Single-node
