@@ -34,6 +34,19 @@ provider "databricks" {
   host = local.databricks_workspace_host
 }
 
+// Initialize provider at Azure account-level
+# Config: host=https://accounts.azuredatabricks.net, account_id=***, azure_client_secret=***, azure_client_id=000000, azure_tenant_id=000000. Env: ARM_CLIENT_SECRET, ARM_CLIENT_ID, ARM_TENANT_ID
+provider "databricks" {
+  alias               = "azure_account"
+  host                = "https://accounts.azuredatabricks.net"
+  account_id          = var.account_id
+  azure_client_id     = var.azure_client_id
+  azure_client_secret = var.azure_client_secret
+  azure_tenant_id     = var.azure_tenant_id
+  auth_type           = "azure-client-secret"
+}
+
+
 // Create azure managed identity to be used by unity catalog metastore
 resource "azurerm_databricks_access_connector" "unity" {
   name                = "adb${local.prefix}-mi"
@@ -78,15 +91,6 @@ resource "databricks_metastore_assignment" "this" {
   workspace_id         = local.databricks_workspace_id
   metastore_id         = databricks_metastore.this.id
   default_catalog_name = "hive_metastore"
-}
-
-
-// Initialize provider at Azure account-level
-provider "databricks" {
-  alias      = "azure_account"
-  host       = "https://accounts.azuredatabricks.net"
-  account_id = var.account_id
-  auth_type  = "azure-cli"
 }
 
 locals {
@@ -236,8 +240,6 @@ resource "databricks_user_role" "account_admin" {
 #   auth_type           = "azure-client-secret"
 # }
 
-
-
 # # resource "databricks_service_principal_role" "my_service_principal_instance_profile" {
 # #   service_principal_id = var.azure_client_id
 # #   role                 = "account_admin"
@@ -261,7 +263,6 @@ resource "databricks_user_role" "account_admin" {
 #   storage_account_name = data.azurerm_storage_account.unity_catalog.name
 #   name                 = "ctr${local.prefix}"
 # }
-
 
 # data "azurerm_client_config" "current" {
 # }
@@ -296,9 +297,6 @@ resource "databricks_user_role" "account_admin" {
 #   metastore_id         = databricks_metastore.this.id
 #   default_catalog_name = "hive_metastore"
 # }
-
-
-
 
 # locals {
 #   aad_groups = toset(var.aad_groups)
