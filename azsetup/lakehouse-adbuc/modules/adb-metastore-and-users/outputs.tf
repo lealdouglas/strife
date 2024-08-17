@@ -17,7 +17,7 @@ output "databricks_sps" {
 }
 
 output "azurerm_storage_account_unity_catalog" {
-  value = azurerm_storage_account.unity_catalog
+  value = data.azurerm_storage_account.unity_catalog
 }
 
 output "azurerm_databricks_access_connector_id" {
