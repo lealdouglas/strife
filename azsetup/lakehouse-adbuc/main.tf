@@ -46,7 +46,7 @@ data "databricks_service_principal" "sp" {
 }
 
 resource "databricks_service_principal_role" "account_admin" {
-  provider             = "azure_account"
+  provider             = databricks.azure_account
   service_principal_id = data.databricks_service_principal.sp.id
   role                 = "account_admin"
 }
