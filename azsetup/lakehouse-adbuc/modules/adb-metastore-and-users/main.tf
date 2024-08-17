@@ -51,7 +51,6 @@ provider "databricks" {
 data "azurerm_databricks_access_connector" "unity" {
   name                = "adb${local.prefix}-mi"
   resource_group_name = data.azurerm_resource_group.this.name
-  location            = data.azurerm_resource_group.this.location
 }
 
 # Create a storage account gen2 in resource group
