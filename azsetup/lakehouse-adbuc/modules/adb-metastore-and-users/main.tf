@@ -49,7 +49,7 @@ data "azurerm_storage_account" "unity_catalog" {
 
 # Create a storage account gen2 in resource group
 data "azurerm_storage_container" "unity_catalog" {
-  storage_account_name = data.azurerm_storage_account.this.name
+  storage_account_name = data.azurerm_storage_account.unity_catalog.name
   name                 = "ctr${local.prefix}"
 }
 
@@ -258,7 +258,7 @@ resource "databricks_user_role" "account_admin" {
 
 # # Create a storage account gen2 in resource group
 # data "azurerm_storage_container" "unity_catalog" {
-#   storage_account_name = data.azurerm_storage_account.this.name
+#   storage_account_name = data.azurerm_storage_account.unity_catalog.name
 #   name                 = "ctr${local.prefix}"
 # }
 
@@ -270,8 +270,8 @@ resource "databricks_user_role" "account_admin" {
 # resource "databricks_metastore" "this" {
 #   name = "primary"
 #   storage_root = format("abfss://%s@%s.dfs.core.windows.net/",
-#     azurerm_storage_container.unity_catalog.name,
-#   azurerm_storage_account.unity_catalog.name)
+#     data.azurerm_storage_container.unity_catalog.name,
+#   data.azurerm_storage_account.unity_catalog.name)
 #   force_destroy = true
 #   # owner         = "account_unity_admin"
 # }
