@@ -48,7 +48,7 @@ provider "databricks" {
 
 
 // Create azure managed identity to be used by unity catalog metastore
-resource "azurerm_databricks_access_connector" "unity" {
+data "azurerm_databricks_access_connector" "unity" {
   name                = "adb${local.prefix}-mi"
   resource_group_name = data.azurerm_resource_group.this.name
   location            = data.azurerm_resource_group.this.location
@@ -73,7 +73,7 @@ resource "databricks_metastore" "this" {
     data.azurerm_storage_container.unity_catalog.name,
   data.azurerm_storage_account.unity_catalog.name)
   force_destroy = true
-  owner         = "account_unity_admin"
+  owner         = "data_engineer"
 }
 
 // Assign managed identity to metastore
@@ -81,7 +81,7 @@ resource "databricks_metastore_data_access" "first" {
   metastore_id = databricks_metastore.this.id
   name         = "the-metastore-key"
   azure_managed_identity {
-    access_connector_id = azurerm_databricks_access_connector.unity.id
+    access_connector_id = data.azurerm_databricks_access_connector.unity.id
   }
   is_default = true
 }
@@ -284,7 +284,7 @@ resource "databricks_user_role" "account_admin" {
 # #   metastore_id = databricks_metastore.this.id
 # #   name         = "the-metastore-key"
 # #   azure_managed_identity {
-# #     access_connector_id = azurerm_databricks_access_connector.unity.id
+# #     access_connector_id = data.azurerm_databricks_access_connector.unity.id
 # #   }
 # #   is_default = true
 # #   depends_on = [databricks_grants.this]
