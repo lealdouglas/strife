@@ -11,7 +11,6 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
   features {}
 }
 
@@ -143,14 +142,13 @@ locals {
 
 // All governed by AzureAD, create or remove users to/from databricks account
 resource "databricks_user" "this" {
-  provider                 = databricks.azure_account
-  for_each                 = local.all_users
-  user_name                = lower(local.all_users[each.key]["user_principal_name"])
-  display_name             = local.all_users[each.key]["display_name"]
-  active                   = local.all_users[each.key]["account_enabled"]
-  external_id              = each.key
-  force                    = true
-  disable_as_user_deletion = true # default behavior
+  provider     = databricks.azure_account
+  for_each     = local.all_users
+  user_name    = lower(local.all_users[each.key]["user_principal_name"])
+  display_name = local.all_users[each.key]["display_name"]
+  active       = local.all_users[each.key]["account_enabled"]
+  external_id  = each.key
+  force        = true
 
   // Review warning before deactivating or deleting users from databricks account
   // https://learn.microsoft.com/en-us/azure/databricks/administration-guide/users-groups/scim/#add-users-and-groups-to-your-azure-databricks-account-using-azure-active-directory-azure-ad
