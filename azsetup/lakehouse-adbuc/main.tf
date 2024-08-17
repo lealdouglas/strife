@@ -41,6 +41,15 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
+data "databricks_service_principal" "sp" {
+  application_id = var.azure_client_id
+}
+
+resource "databricks_service_principal_role" "account_admin" {
+  service_principal_id = data.databricks_service_principal.sp.id
+  role                 = "account_admin"
+}
+
 // Module creating UC metastore and adding users, groups and service principals to azure databricks account
 module "metastore_and_users" {
   source                    = "./modules/adb-metastore-and-users"
@@ -54,38 +63,16 @@ module "metastore_and_users" {
   prefix                    = local.suffix_concat
 }
 
-
-resource "databricks_service_principal" "sp" {
-  application_id       = var.azure_client_id
-  display_name         = "spnadminstrifedtm"
-  allow_cluster_create = true
-}
-
-resource "databricks_service_principal_role" "account_admin" {
-  service_principal_id = databricks_service_principal.sp.id
-  role                 = "account_admin"
-}
-
-# resource "databricks_grants" "this" {
-#   metastore = module.metastore_and_users.metastore_id
-#   grant {
-#     principal  = "users"
-#     privileges = ["CREATE_CATALOG", "CREATE_EXTERNAL_LOCATION", "CREATE_STORAGE_CREDENTIAL"]
+// Assign managed identity to metastore
+# resource "databricks_metastore_data_access" "first" {
+#   metastore_id = module.metastore_and_users.metastore_id
+#   name         = "the-metastore-key"
+#   azure_managed_identity {
+#     access_connector_id = module.metastore_and_users.azurerm_databricks_access_connector_id
 #   }
+#   is_default = true
 #   depends_on = [module.metastore_and_users]
 # }
-
-// Assign managed identity to metastore
-// AVALIAR COLOCAR ESSE CARA NA PARTE DE FORA
-resource "databricks_metastore_data_access" "first" {
-  metastore_id = module.metastore_and_users.metastore_id
-  name         = "the-metastore-key"
-  azure_managed_identity {
-    access_connector_id = module.metastore_and_users.azurerm_databricks_access_connector_id
-  }
-  is_default = true
-  depends_on = [module.metastore_and_users]
-}
 
 locals {
   merged_user_sp = merge(module.metastore_and_users.databricks_users, module.metastore_and_users.databricks_sps)
@@ -132,7 +119,7 @@ resource "databricks_mws_permission_assignment" "workspace_user_groups" {
 // Create storage credentials, external locations, catalogs, schemas and grants
 // Create a container in storage account to be used by dev catalog as root storage
 resource "azurerm_storage_container" "dev_catalog" {
-  name                  = "dev-catalog"
+  name                  = "dtmaster-catalog"
   storage_account_name  = module.metastore_and_users.azurerm_storage_account_unity_catalog.name
   container_access_type = "private"
 }
@@ -151,9 +138,9 @@ resource "databricks_storage_credential" "external_mi" {
 // Create external location to be used as root storage by dev catalog
 // You do not have the CREATE EXTERNAL LOCATION privilege for this credential. 
 // Contact your metastore administrator to grant you the privilege to this credential.
-// abfss://dev-catalog@starsgdtmstrdougslldevuc.dfs.core.windows.net
+// abfss://dtmaster-catalog@starsgdtmstrdougslldevuc.dfs.core.windows.net
 resource "databricks_external_location" "dev_location" {
-  name = "dev-catalog-external-location"
+  name = "dtmaster-catalog-external-location"
   url = format("abfss://%s@%s.dfs.core.windows.net/",
     azurerm_storage_container.dev_catalog.name,
   module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
@@ -166,12 +153,12 @@ resource "databricks_external_location" "dev_location" {
 // Create dev environment catalog
 resource "databricks_catalog" "dev" {
   metastore_id = module.metastore_and_users.metastore_id
-  name         = "dev_catalog"
-  comment      = "this catalog is for dev env"
+  name         = "dtmaster_catalog"
+  comment      = "this catalog is for dtmaster env"
   # owner        = "data_engineer"
   storage_root = databricks_external_location.dev_location.url
   properties = {
-    purpose = "dev"
+    purpose = "dtmaster"
   }
   depends_on = [databricks_external_location.dev_location]
 }
@@ -183,6 +170,7 @@ resource "databricks_grants" "dev_catalog" {
     principal  = "data_engineer"
     privileges = ["USE_CATALOG"]
   }
+  depends_on = [databricks_catalog.dev]
 }
 
 // Create schema for bronze datalake layer in dev env.
@@ -190,7 +178,8 @@ resource "databricks_schema" "bronze" {
   catalog_name = databricks_catalog.dev.id
   name         = "bronze"
   # owner        = "data_engineer"
-  comment = "this database is for bronze layer tables/views"
+  comment    = "this database is for bronze layer tables/views"
+  depends_on = [databricks_catalog.dev]
 }
 
 // Grants on bronze schema
@@ -200,6 +189,7 @@ resource "databricks_grants" "bronze" {
     principal  = "data_engineer"
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
+  depends_on = [databricks_catalog.dev]
 }
 
 // Create schema for silver datalake layer in dev env.
@@ -207,7 +197,8 @@ resource "databricks_schema" "silver" {
   catalog_name = databricks_catalog.dev.id
   name         = "silver"
   # owner        = "data_engineer"
-  comment = "this database is for silver layer tables/views"
+  comment    = "this database is for silver layer tables/views"
+  depends_on = [databricks_catalog.dev]
 }
 
 // Grants on silver schema
@@ -217,6 +208,7 @@ resource "databricks_grants" "silver" {
     principal  = "data_engineer"
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
+  depends_on = [databricks_catalog.dev]
 }
 
 // Create schema for gold datalake layer in dev env.
@@ -224,7 +216,8 @@ resource "databricks_schema" "gold" {
   catalog_name = databricks_catalog.dev.id
   name         = "gold"
   # owner        = "data_engineer"
-  comment = "this database is for gold layer tables/views"
+  comment    = "this database is for gold layer tables/views"
+  depends_on = [databricks_catalog.dev]
 }
 
 // Grants on gold schema
@@ -234,10 +227,7 @@ resource "databricks_grants" "gold" {
     principal  = "data_engineer"
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
-  # grant {
-  #   principal  = "data_analyst"
-  #   privileges = ["USE_SCHEMA", "SELECT"]
-  # }
+  depends_on = [databricks_catalog.dev]
 }
 
 

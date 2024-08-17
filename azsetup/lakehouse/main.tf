@@ -78,7 +78,7 @@ resource "azurerm_databricks_access_connector" "unity" {
 
 // Create a container in storage account to be used by unity catalog metastore as root storage
 resource "azurerm_storage_container" "unity_catalog" {
-  name                  = "ctr${local.suffix_concat}"
+  name                  = "ctr${local.suffix_concat}mtst"
   storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
