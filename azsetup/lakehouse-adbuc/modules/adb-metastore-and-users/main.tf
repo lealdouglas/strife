@@ -253,46 +253,12 @@ resource "databricks_user_role" "account_admin" {
 # }
 
 
+
 # # resource "databricks_service_principal_role" "my_service_principal_instance_profile" {
 # #   service_principal_id = var.azure_client_id
 # #   role                 = "account_admin"
 # # }
 
-
-# // Create azure managed identity to be used by unity catalog metastore
-# resource "azurerm_databricks_access_connector" "unity" {
-#   name                = "adb${local.prefix}-mi"
-#   resource_group_name = data.azurerm_resource_group.this.name
-#   location            = data.azurerm_resource_group.this.location
-#   identity {
-#     type = "SystemAssigned"
-#   }
-# }
-
-# // Create a storage account to be used by unity catalog metastore as root storage
-# resource "azurerm_storage_account" "unity_catalog" {
-#   name                     = "sta${local.prefix}uc"
-#   resource_group_name      = data.azurerm_resource_group.this.name
-#   location                 = data.azurerm_resource_group.this.location
-#   tags                     = data.azurerm_resource_group.this.tags
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-#   is_hns_enabled           = true
-# }
-
-# // Create a container in storage account to be used by unity catalog metastore as root storage
-# resource "azurerm_storage_container" "unity_catalog" {
-#   name                  = "ctr${local.prefix}"
-#   storage_account_name  = azurerm_storage_account.unity_catalog.name
-#   container_access_type = "private"
-# }
-
-# // Assign the Storage Blob Data Contributor role to managed identity to allow unity catalog to access the storage
-# resource "azurerm_role_assignment" "mi_data_contributor" {
-#   scope                = azurerm_storage_account.unity_catalog.id
-#   role_definition_name = "Storage Blob Data Contributor"
-#   principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
-# }
 
 # data "azurerm_client_config" "current" {
 # }
@@ -319,6 +285,7 @@ resource "databricks_user_role" "account_admin" {
 # #   is_default = true
 # #   depends_on = [databricks_grants.this]
 # # }
+
 
 # // Attach the databricks workspace to the metastore
 # resource "databricks_metastore_assignment" "this" {
