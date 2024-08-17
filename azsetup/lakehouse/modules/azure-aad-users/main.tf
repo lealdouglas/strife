@@ -8,12 +8,12 @@ resource "azuread_group" "data_engineers" {
   security_enabled = true
 }
 
-#Criando um grupo de Data Engineers
-# resource "azuread_group" "account_unity_admin" {
-#   display_name     = "account_unity_admin"
-#   description      = "Group for Admin Unity"
-#   security_enabled = true
-# }
+# Criando um grupo de Data Engineers
+resource "azuread_group" "account_unity_admin" {
+  display_name     = "account_unity_admin"
+  description      = "Group for Admin Unity"
+  security_enabled = true
+}
 
 resource "azuread_application" "this" {
   display_name = "spnfake${var.suffix_concat}"
@@ -42,6 +42,6 @@ resource "azuread_group_member" "user4_member" {
 }
 
 resource "azuread_group_member" "user5_member" {
-  group_object_id  = azuread_group.data_engineers.id
+  group_object_id  = azuread_group.account_unity_admin.id
   member_object_id = data.azurerm_client_config.current.object_id
 }
