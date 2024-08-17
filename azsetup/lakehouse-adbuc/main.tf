@@ -54,6 +54,18 @@ module "metastore_and_users" {
   prefix                    = local.suffix_concat
 }
 
+
+resource "databricks_service_principal" "sp" {
+  application_id       = var.azure_client_id
+  display_name         = "spnadminstrifedtm"
+  allow_cluster_create = true
+}
+
+resource "databricks_service_principal_role" "account_admin" {
+  service_principal_id = databricks_service_principal.sp.id
+  role                 = "account_admin"
+}
+
 # resource "databricks_grants" "this" {
 #   metastore = module.metastore_and_users.metastore_id
 #   grant {
