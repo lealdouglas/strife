@@ -41,7 +41,7 @@ resource "azuread_group_member" "user4_member" {
   member_object_id = azuread_service_principal.this.object_id
 }
 
-resource "azuread_group_member" "user5_member" {
-  group_object_id  = azuread_group.account_unity_admin.id
-  member_object_id = data.azurerm_client_config.current.object_id
-}
+# resource "azuread_group_member" "user5_member" {
+#   group_object_id  = azuread_group.account_unity_admin.id
+#   member_object_id = data.azurerm_client_config.current.object_id
+# }
