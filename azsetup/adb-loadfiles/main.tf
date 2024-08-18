@@ -60,7 +60,7 @@ resource "databricks_job" "this" {
     task_key = var.task_key
     existing_cluster_id = databricks_cluster.this.cluster_id
     notebook_task {
-      notebook_path = "/demo"
+      notebook_path = "/Workspace/Users/douglas.sleal@outlook.com/load_message_files"
     }
   }
 }
