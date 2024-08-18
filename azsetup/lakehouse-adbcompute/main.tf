@@ -40,44 +40,24 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
-data "databricks_node_type" "smallest" {
-  local_disk = true
-}
-
-data "databricks_spark_version" "latest_lts" {
-  long_term_support = true
-}
-
-# 14.3.x-scala2.12
 resource "databricks_cluster" "this" {
-  cluster_name            = "dtmaster"
-  spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
+  cluster_name            = "Single Node"
+  spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
-  num_workers             = 1
-  data_security_mode      = "USER_ISOLATION"
 
   spark_conf = {
     # Single-node
-    # "spark.databricks.cluster.profile" : "singleNode"
-    # "spark.master" : "local[*]"
-    "spark.databricks.sql.initial.catalog.namespace" : "dev_catalog"
+    "spark.databricks.cluster.profile" : "singleNode"
+    "spark.master" : "local[*]"
   }
-  # custom_tags = {
-  #   "ResourceClass" = "SingleNode"
-  # }
-   azure_attributes {
-    availability       = "SPOT_WITH_FALLBACK_AZURE"
-    first_on_demand    = 1
-    spot_bid_max_price = -1
+
+  custom_tags = {
+    "ResourceClass" = "SingleNode"
   }
-  #   library {
-  #   pypi {
-  #     package = "fbprophet==0.6"
-  #     // repo can also be specified here
-  #   }
-  # }
+
 }
+
 
 resource "databricks_permissions" "cluster_usage" {
   cluster_id = databricks_cluster.this.id
