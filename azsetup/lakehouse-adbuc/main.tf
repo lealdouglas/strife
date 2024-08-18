@@ -161,7 +161,7 @@ resource "databricks_catalog" "dev" {
   properties = {
     purpose = "dtmaster"
   }
-  depends_on = [databricks_external_location.dev_location]
+  depends_on = [ module.metastore_and_users, databricks_external_location.dev_location ]
 }
 
 // Grants on dev catalog
