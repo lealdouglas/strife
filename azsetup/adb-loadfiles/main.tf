@@ -58,7 +58,7 @@ resource "databricks_job" "this" {
   name = var.job_name
   task {
     task_key = var.task_key
-    existing_cluster_id = databricks_cluster.this.cluster_id
+    existing_cluster_id = "NA"
     notebook_task {
       notebook_path = "/Workspace/Users/douglas.sleal@outlook.com/load_message_files"
     }
