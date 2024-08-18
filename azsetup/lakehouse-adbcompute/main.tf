@@ -54,6 +54,7 @@ resource "databricks_cluster" "this" {
   spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
+  data_security_mode      = "USER_ISOLATION"
 
   spark_conf = {
     # Single-node
