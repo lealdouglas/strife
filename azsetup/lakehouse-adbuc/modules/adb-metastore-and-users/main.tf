@@ -73,7 +73,7 @@ resource "databricks_metastore" "this" {
     data.azurerm_storage_container.unity_catalog.name,
   data.azurerm_storage_account.unity_catalog.name)
   force_destroy = true
-  owner         = "account_unity_admin"
+  owner         = "douglas.sleal@outlook.com"
 }
 
 // Assign managed identity to metastore
