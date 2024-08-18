@@ -83,6 +83,13 @@ resource "azurerm_storage_container" "unity_catalog" {
   container_access_type = "private"
 }
 
+// Create a container in storage account to be used by unity catalog metastore as root storage
+resource "azurerm_storage_container" "unity_catalog" {
+  name                  = "ctr${local.suffix_concat}raw"
+  storage_account_name  = azurerm_storage_account.this.name
+  container_access_type = "private"
+}
+
 // Assign the Storage Blob Data Contributor role to managed identity to allow unity catalog to access the storage
 resource "azurerm_role_assignment" "mi_data_contributor" {
   scope                = azurerm_storage_account.this.id
