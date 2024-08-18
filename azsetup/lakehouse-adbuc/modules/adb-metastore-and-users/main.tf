@@ -62,7 +62,7 @@ data "azurerm_storage_account" "unity_catalog" {
 # Create a storage account gen2 in resource group
 data "azurerm_storage_container" "unity_catalog" {
   storage_account_name = data.azurerm_storage_account.unity_catalog.name
-  name                 = "ctr${local.prefix}mtst"  
+  name                 = "ctr${local.prefix}" # "mtst"  
 }
 
 
@@ -73,7 +73,7 @@ resource "databricks_metastore" "this" {
     data.azurerm_storage_container.unity_catalog.name,
   data.azurerm_storage_account.unity_catalog.name)
   force_destroy = true
-  owner         = "douglas.sleal@outlook.com"
+  owner         = "account_unity_admin"
 }
 
 // Assign managed identity to metastore
@@ -164,7 +164,7 @@ resource "databricks_service_principal" "sp" {
   display_name   = local.all_spns[each.key]["display_name"]
   active         = local.all_spns[each.key]["account_enabled"]
   external_id    = each.key
-  force          = true
+  force          = false
 }
 
 locals {
