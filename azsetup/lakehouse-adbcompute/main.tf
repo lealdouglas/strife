@@ -59,6 +59,7 @@ resource "databricks_cluster" "this" {
     # Single-node
     "spark.databricks.cluster.profile" : "singleNode"
     "spark.master" : "local[*]"
+    "spark.databricks.sql.initial.catalog.namespace" : "dev_catalog"
   }
 
   custom_tags = {
