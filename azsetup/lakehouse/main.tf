@@ -67,7 +67,7 @@ resource "azurerm_databricks_access_connector" "unity" {
 
 # // Create a storage account to be used by unity catalog metastore as root storage
 # resource "azurerm_storage_account" "unity_catalog" {
-#   name                     = "sta${local.suffix_concat}uc"
+#   name                     = "sta2${local.suffix_concat}uc"
 #   resource_group_name      = azurerm_resource_group.this.name
 #   location                 = azurerm_resource_group.this.location
 #   tags                     = azurerm_resource_group.this.tags
