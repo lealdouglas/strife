@@ -84,7 +84,7 @@ resource "azurerm_storage_container" "unity_catalog" {
 }
 
 // Create a container in storage account to be used by unity catalog metastore as root storage
-resource "azurerm_storage_container" "unity_catalog" {
+resource "azurerm_storage_container" "raw" {
   name                  = "ctr${local.suffix_concat}raw"
   storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
