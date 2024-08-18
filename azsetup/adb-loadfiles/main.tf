@@ -63,6 +63,11 @@ resource "databricks_job" "this" {
       notebook_path = "/Workspace/Users/douglas.sleal@outlook.com/load_message_files"
     }
   }
+
+  schedule {
+    quartz_cron_expression = "*/2 * * * *" # cron schedule of job
+    timezone_id = "UTC"
+  }
 }
 
 output "job_url" {
