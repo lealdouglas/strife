@@ -131,7 +131,7 @@ resource "databricks_storage_credential" "external_mi" {
   azure_managed_identity {
     access_connector_id = module.metastore_and_users.azurerm_databricks_access_connector_id
   }
-  owner      = "account_unity_admin"
+  # owner      = "account_unity_admin"
   comment    = "Storage credential for all external locations"
   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
 }
@@ -146,7 +146,7 @@ resource "databricks_external_location" "dev_location" {
     azurerm_storage_container.dev_catalog.name,
   module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
   credential_name = databricks_storage_credential.external_mi.id
-  owner           = "account_unity_admin"
+  # owner           = "account_unity_admin"
   comment         = "External location used by dev catalog as root storage"
   depends_on      = [databricks_storage_credential.external_mi]
 }
@@ -156,7 +156,7 @@ resource "databricks_catalog" "dev" {
   metastore_id = module.metastore_and_users.metastore_id
   name         = "dtmaster_catalog"
   comment      = "this catalog is for dtmaster env"
-  owner        = "account_unity_admin"
+  # owner        = "account_unity_admin"
   storage_root = databricks_external_location.dev_location.url
   properties = {
     purpose = "dtmaster"
