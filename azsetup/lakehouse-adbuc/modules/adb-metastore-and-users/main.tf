@@ -56,7 +56,7 @@ data "azurerm_databricks_access_connector" "unity" {
 # Create a storage account gen2 in resource group
 data "azurerm_storage_account" "unity_catalog" {
   resource_group_name = data.azurerm_resource_group.this.name
-  name                = "sta${local.prefix}"
+  name                = "sta2${local.prefix}"
 }
 
 # Create a storage account gen2 in resource group
