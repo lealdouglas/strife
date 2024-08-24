@@ -14,6 +14,12 @@ terraform {
 
 }
 
+provider "azurerm" {
+  features {}
+  subscription_id = "8a66b4be-4d16-49bb-9c92-7610ca4ac552"
+}
+
+
 data "azurerm_client_config" "current" {
 }
 
