@@ -33,11 +33,3 @@ resource "azurerm_eventhub_namespace" "example" {
     environment = local.tags.env
   }
 }
-
-resource "azurerm_eventhub" "example" {
-  name                = "acceptanceTestEventHub"
-  namespace_name      = azurerm_eventhub_namespace.example.name
-  resource_group_name = data.azurerm_resource_group.this.name
-  partition_count     = 2
-  message_retention   = 1
-}
