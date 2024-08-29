@@ -50,7 +50,7 @@ data "databricks_spark_version" "latest_lts" {
 
 # 14.3.x-scala2.12
 resource "databricks_cluster" "this" {
-  cluster_name            = "dtmaster"
+  cluster_name            = "cluster-${local.suffix_concat}"
   spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
@@ -85,5 +85,5 @@ resource "databricks_permissions" "cluster_usage" {
 }
 
 output "cluster_url" {
- value = databricks_cluster.this.url
+  value = databricks_cluster.this.url
 }

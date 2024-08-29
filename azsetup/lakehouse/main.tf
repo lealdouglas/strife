@@ -96,3 +96,12 @@ resource "azurerm_role_assignment" "mi_data_contributor" {
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
 }
+
+resource "azurerm_eventhub_namespace" "example" {
+  name                = "eth${local.suffix_concat}"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  sku                 = "Standard"
+  capacity            = 1
+  tags                = local.tags
+}
