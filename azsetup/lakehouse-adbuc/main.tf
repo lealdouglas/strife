@@ -147,8 +147,8 @@ resource "databricks_external_location" "dev_location" {
   module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
   credential_name = databricks_storage_credential.external_mi.id
   # owner           = "account_unity_admin"
-  comment         = "External location used by dev catalog as root storage"
-  depends_on      = [databricks_storage_credential.external_mi]
+  comment    = "External location used by dev catalog as root storage"
+  depends_on = [databricks_storage_credential.external_mi]
 }
 
 // Create dev environment catalog
@@ -161,7 +161,7 @@ resource "databricks_catalog" "dev" {
   properties = {
     purpose = "dtmaster"
   }
-  depends_on = [ module.metastore_and_users, databricks_external_location.dev_location ]
+  depends_on = [module.metastore_and_users, databricks_external_location.dev_location]
 }
 
 // Grants on dev catalog
@@ -178,7 +178,7 @@ resource "databricks_grants" "dev_catalog" {
 resource "databricks_schema" "bronze" {
   catalog_name = databricks_catalog.dev.id
   name         = "bronze"
-  owner        = "account_unity_admin"
+  owner        = "data_engineer"
   comment      = "this database is for bronze layer tables/views"
   depends_on   = [databricks_catalog.dev]
 }
@@ -197,7 +197,7 @@ resource "databricks_grants" "bronze" {
 resource "databricks_schema" "silver" {
   catalog_name = databricks_catalog.dev.id
   name         = "silver"
-  owner        = "account_unity_admin"
+  owner        = "data_engineer"
   comment      = "this database is for silver layer tables/views"
   depends_on   = [databricks_catalog.dev]
 }
@@ -216,7 +216,7 @@ resource "databricks_grants" "silver" {
 resource "databricks_schema" "gold" {
   catalog_name = databricks_catalog.dev.id
   name         = "gold"
-  owner        = "account_unity_admin"
+  owner        = "data_engineer"
   comment      = "this database is for gold layer tables/views"
   depends_on   = [databricks_catalog.dev]
 }

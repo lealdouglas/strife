@@ -8,12 +8,12 @@ resource "azuread_group" "data_engineers" {
   security_enabled = true
 }
 
-# Criando um grupo de Data Engineers
-resource "azuread_group" "account_unity_admin" {
-  display_name     = "account_unity_admin"
-  description      = "Group for Admin Unity"
-  security_enabled = true
-}
+# # Criando um grupo de Data Engineers
+# resource "azuread_group" "account_unity_admin" {
+#   display_name     = "account_unity_admin"
+#   description      = "Group for Admin Unity"
+#   security_enabled = true
+# }
 
 resource "azuread_application" "this" {
   display_name = "spngroup${var.suffix_concat}"

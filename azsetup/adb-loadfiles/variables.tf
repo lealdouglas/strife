@@ -7,7 +7,7 @@ variable "account_id" {
 variable "aad_groups" {
   description = "List of AAD groups that you want to add to Databricks account"
   type        = list(string)
-  default     = ["data_engineer", "account_unity_admin"]
+  default     = ["data_engineer"]
 }
 
 

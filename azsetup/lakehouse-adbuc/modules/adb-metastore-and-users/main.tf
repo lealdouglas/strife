@@ -62,7 +62,7 @@ data "azurerm_storage_account" "unity_catalog" {
 # Create a storage account gen2 in resource group
 data "azurerm_storage_container" "unity_catalog" {
   storage_account_name = data.azurerm_storage_account.unity_catalog.name
-  name                 = "ctr${local.prefix}mtst"  
+  name                 = "ctr${local.prefix}mtst"
 }
 
 
