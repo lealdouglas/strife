@@ -33,7 +33,7 @@ resource "azurerm_resource_group" "this" {
 
 # Create a storage account gen2 in resource group
 resource "azurerm_storage_account" "this" {
-  name                      = "sta2${local.suffix_concat}"
+  name                      = "sta${local.suffix_concat}"
   resource_group_name       = azurerm_resource_group.this.name
   location                  = var.location
   account_tier              = "Standard"
@@ -64,17 +64,6 @@ resource "azurerm_databricks_access_connector" "unity" {
     type = "SystemAssigned"
   }
 }
-
-# // Create a storage account to be used by unity catalog metastore as root storage
-# resource "azurerm_storage_account" "unity_catalog" {
-#   name                     = "sta2${local.suffix_concat}uc"
-#   resource_group_name      = azurerm_resource_group.this.name
-#   location                 = azurerm_resource_group.this.location
-#   tags                     = azurerm_resource_group.this.tags
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-#   is_hns_enabled           = true
-# }
 
 // Create a container in storage account to be used by unity catalog metastore as root storage
 resource "azurerm_storage_container" "unity_catalog" {
