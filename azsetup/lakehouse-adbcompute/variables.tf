@@ -13,21 +13,21 @@ variable "aad_groups" {
 
 variable "project_code" {
   type    = string
-  default = "strifedtm"
+  default = "strife"
 }
 
 variable "tags" {
   type = map(any)
   default = {
-    projectCode = "strifedtm"
-    application = "strifedtm"
-    costCenter  = "strifedtm"
+    projectCode = "strife"
+    application = "strife"
+    costCenter  = "riscos"
   }
 }
 
 variable "envv" {
   type    = string
-  default = "dev"
+  default = "dtm"
 }
 
 variable "azure_client_id" {

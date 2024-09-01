@@ -1,6 +1,6 @@
 variable "project_code" {
   type    = string
-  default = "strifedtm"
+  default = "strife"
 }
 
 variable "location" {
@@ -15,15 +15,15 @@ variable "location_code" {
 
 variable "envv" {
   type    = string
-  default = "dev"
+  default = "dtm"
 }
 
 variable "tags" {
   type = map(any)
   default = {
-    projectCode = "strifedtm"
-    application = "strifedtm"
-    costCenter  = "strifedtm"
+    projectCode = "strife"
+    application = "strife"
+    costCenter  = "riscos"
   }
 }
 

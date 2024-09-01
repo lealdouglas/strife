@@ -30,4 +30,3 @@ variable "azure_tenant_id" {
 variable "prefix" {
   description = "Prefix to be used with resouce names"
 }
-

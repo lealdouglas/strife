@@ -51,7 +51,7 @@ resource "azurerm_databricks_workspace" "this" {
   resource_group_name         = azurerm_resource_group.this.name
   name                        = "adb${local.suffix_concat}"
   sku                         = "premium"
-  managed_resource_group_name = "rsg${local.suffix_concat}-workspace"
+  managed_resource_group_name = "rsgadbmanaged"
   tags                        = local.tags
 }
 
