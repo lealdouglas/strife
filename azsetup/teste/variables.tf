@@ -21,8 +21,8 @@ variable "envv" {
 variable "tags" {
   type = map(any)
   default = {
-    projectCode = variable1
-    application = variable1
-    costCenter  = variable1
+    projectCode = "d"
+    application = "d"
+    costCenter  = "d"
   }
 }
