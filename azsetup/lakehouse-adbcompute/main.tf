@@ -1,3 +1,5 @@
+# Bloco terraform para definir os provedores necessários
+# Terraform block to define required providers
 terraform {
   required_providers {
     azurerm = {
@@ -11,25 +13,33 @@ terraform {
   }
 }
 
+# Provedor Azure
+# Azure provider
 provider "azurerm" {
   features {}
 }
 
+# Obtém informações do workspace Databricks
+# Get Databricks workspace information
 data "azurerm_databricks_workspace" "this" {
   name                = local.databricks_workspace_name
   resource_group_name = local.resource_group
 }
 
+# Variáveis locais
+# Local variables
 locals {
   databricks_workspace_host = data.azurerm_databricks_workspace.this.workspace_url
 }
 
-// Provider for databricks workspace
+# Provedor para workspace Databricks
+# Provider for Databricks workspace
 provider "databricks" {
   host = local.databricks_workspace_host
 }
 
-// Provider for databricks account
+# Provedor para conta Databricks
+# Provider for Databricks account
 provider "databricks" {
   alias               = "azure_account"
   host                = "https://accounts.azuredatabricks.net"
@@ -40,15 +50,20 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
+# Obtém o menor tipo de nó disponível
+# Get the smallest available node type
 data "databricks_node_type" "smallest" {
   local_disk = true
 }
 
+# Obtém a versão mais recente do Spark com suporte de longo prazo
+# Get the latest long-term support Spark version
 data "databricks_spark_version" "latest_lts" {
   long_term_support = true
 }
 
-# 14.3.x-scala2.12
+# Cria um cluster Databricks
+# Create a Databricks cluster
 resource "databricks_cluster" "this" {
   cluster_name            = "cluster-${local.suffix_concat}"
   spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
@@ -66,10 +81,10 @@ resource "databricks_cluster" "this" {
   custom_tags = {
     "ResourceClass" = "SingleNode"
   }
-
 }
 
-
+# Define permissões para o uso do cluster
+# Define permissions for cluster usage
 resource "databricks_permissions" "cluster_usage" {
   cluster_id = databricks_cluster.this.id
 
@@ -84,6 +99,8 @@ resource "databricks_permissions" "cluster_usage" {
   }
 }
 
+# Saída da URL do cluster
+# Output the cluster URL
 output "cluster_url" {
   value = databricks_cluster.this.url
 }

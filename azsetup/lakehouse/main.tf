@@ -1,3 +1,5 @@
+# Recomendamos fortemente o uso do bloco required_providers para definir a
+# fonte e a versão do provedor Azure sendo usado
 # We strongly recommend using the required_providers block to set the
 # Azure Provider source and version being used
 
@@ -11,18 +13,21 @@ terraform {
       version = "=1.15.0"
     }
   }
-
 }
 
+# Obtém a configuração atual do cliente Azure
+# Get the current Azure client configuration
 data "azurerm_client_config" "current" {
 }
 
-// Module creating UC metastore and adding users, groups and service principals to azure databricks account
+# Módulo que cria o metastore UC e adiciona usuários, grupos e principais de serviço à conta Azure Databricks
+# Module creating UC metastore and adding users, groups and service principals to Azure Databricks account
 module "azure_aad_users" {
   source        = "./modules/azure-aad-users"
   suffix_concat = local.suffix_concat
 }
 
+# Cria um grupo de recursos
 # Create a resource group
 resource "azurerm_resource_group" "this" {
   name     = "rsg${local.suffix_concat}"
@@ -30,8 +35,8 @@ resource "azurerm_resource_group" "this" {
   tags     = local.tags
 }
 
-
-# Create a storage account gen2 in resource group
+# Cria uma conta de armazenamento gen2 no grupo de recursos
+# Create a storage account gen2 in the resource group
 resource "azurerm_storage_account" "this" {
   name                      = "sta${local.suffix_concat}"
   resource_group_name       = azurerm_resource_group.this.name
@@ -46,6 +51,8 @@ resource "azurerm_storage_account" "this" {
   tags                      = local.tags
 }
 
+# Cria um workspace Databricks
+# Create a Databricks workspace
 resource "azurerm_databricks_workspace" "this" {
   location                    = azurerm_resource_group.this.location
   resource_group_name         = azurerm_resource_group.this.name
@@ -55,7 +62,8 @@ resource "azurerm_databricks_workspace" "this" {
   tags                        = local.tags
 }
 
-// Create azure managed identity to be used by unity catalog metastore
+# Cria uma identidade gerenciada do Azure para ser usada pelo metastore do Unity Catalog
+# Create an Azure managed identity to be used by Unity Catalog metastore
 resource "azurerm_databricks_access_connector" "unity" {
   name                = "adb${local.suffix_concat}-mi"
   resource_group_name = azurerm_resource_group.this.name
@@ -65,27 +73,32 @@ resource "azurerm_databricks_access_connector" "unity" {
   }
 }
 
-// Create a container in storage account to be used by unity catalog metastore as root storage
+# Cria um contêiner na conta de armazenamento para ser usado pelo metastore do Unity Catalog como armazenamento raiz
+# Create a container in the storage account to be used by Unity Catalog metastore as root storage
 resource "azurerm_storage_container" "unity_catalog" {
   name                  = "ctr${local.suffix_concat}mtst"
   storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
 
-// Create a container in storage account to be used by unity catalog metastore as root storage
+# Cria um contêiner na conta de armazenamento para ser usado pelo metastore do Unity Catalog como armazenamento raiz
+# Create a container in the storage account to be used by Unity Catalog metastore as root storage
 resource "azurerm_storage_container" "raw" {
   name                  = "ctr${local.suffix_concat}raw"
   storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
 
-// Assign the Storage Blob Data Contributor role to managed identity to allow unity catalog to access the storage
+# Atribui a função de Contribuidor de Dados do Blob de Armazenamento à identidade gerenciada para permitir que o Unity Catalog acesse o armazenamento
+# Assign the Storage Blob Data Contributor role to managed identity to allow Unity Catalog to access the storage
 resource "azurerm_role_assignment" "mi_data_contributor" {
   scope                = azurerm_storage_account.this.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_databricks_access_connector.unity.identity[0].principal_id
 }
 
+# Cria um namespace do Event Hub
+# Create an Event Hub namespace
 resource "azurerm_eventhub_namespace" "example" {
   name                = "eth${local.suffix_concat}"
   location            = azurerm_resource_group.this.location
