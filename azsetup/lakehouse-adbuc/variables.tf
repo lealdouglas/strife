@@ -11,19 +11,21 @@ variable "aad_groups" {
 }
 
 
-variable "project_code" {
+variable "domain" {
   type    = string
-  default = "strife"
+  default = "domain"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    projectCode = "strife"
-    application = "strife"
-    costCenter  = "riscos"
-  }
+variable "catalog" {
+  type    = string
+  default = "catalog"
 }
+
+variable "project" {
+  type    = string
+  default = "project"
+}
+
 
 variable "envv" {
   type    = string

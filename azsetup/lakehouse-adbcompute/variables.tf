@@ -1,3 +1,18 @@
+variable "domain" {
+  type    = string
+  default = "domain"
+}
+
+variable "catalog" {
+  type    = string
+  default = "catalog"
+}
+
+variable "project" {
+  type    = string
+  default = "project"
+}
+
 
 variable "account_id" {
   description = "Azure databricks account id"
@@ -10,20 +25,6 @@ variable "aad_groups" {
   default     = ["data_engineer"]
 }
 
-
-variable "project_code" {
-  type    = string
-  default = "strife"
-}
-
-variable "tags" {
-  type = map(any)
-  default = {
-    projectCode = "strife"
-    application = "strife"
-    costCenter  = "riscos"
-  }
-}
 
 variable "envv" {
   type    = string
