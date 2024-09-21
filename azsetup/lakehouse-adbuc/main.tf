@@ -123,7 +123,7 @@ resource "databricks_mws_permission_assignment" "workspace_user_groups" {
 # Cria um contêiner na conta de armazenamento para ser usado pelo catálogo de desenvolvimento como armazenamento raiz
 # Create a container in the storage account to be used by dev catalog as root storage
 resource "azurerm_storage_container" "dev_catalog" {
-  name                  = "dtmaster-catalog"
+  name                  = "container-catalog"
   storage_account_name  = module.metastore_and_users.azurerm_storage_account_unity_catalog.name
   container_access_type = "private"
 }
@@ -155,7 +155,7 @@ resource "databricks_external_location" "dev_location" {
 # Create dev environment catalog
 resource "databricks_catalog" "dev" {
   metastore_id = module.metastore_and_users.metastore_id
-  name         = "dtmaster_catalog"
+  name         = local.catalog_name
   comment      = "this catalog is for dtmaster env"
   storage_root = databricks_external_location.dev_location.url
   properties = {

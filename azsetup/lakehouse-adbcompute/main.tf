@@ -65,7 +65,7 @@ data "databricks_spark_version" "latest_lts" {
 # Cria um cluster Databricks
 # Create a Databricks cluster
 resource "databricks_cluster" "this" {
-  cluster_name            = "cluster-${local.suffix_concat}"
+  cluster_name            = "cluster-single-dtm-${local.suffix_concat}"
   spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
@@ -75,7 +75,7 @@ resource "databricks_cluster" "this" {
     # Single-node
     "spark.databricks.cluster.profile" : "singleNode"
     "spark.master" : "local[*]"
-    "spark.databricks.sql.initial.catalog.namespace" : "dtmaster_catalog"
+    "spark.databricks.sql.initial.catalog.namespace" : local.catalog_name
   }
 
   custom_tags = {
