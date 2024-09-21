@@ -1,6 +1,16 @@
-variable "project_code" {
+variable "domain" {
   type    = string
-  default = "strife"
+  default = "domain"
+}
+
+variable "catalog" {
+  type    = string
+  default = "catalog"
+}
+
+variable "project" {
+  type    = string
+  default = "project"
 }
 
 variable "location" {
@@ -16,15 +26,6 @@ variable "location_code" {
 variable "envv" {
   type    = string
   default = "dtm"
-}
-
-variable "tags" {
-  type = map(any)
-  default = {
-    projectCode = "strife"
-    application = "strife"
-    costCenter  = "riscos"
-  }
 }
 
 variable "aad_groups" {
