@@ -8,3 +8,19 @@ variable "user_principal_name" {
   default = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
 
 }
+
+
+variable "domain" {
+  type    = string
+  default = "domain"
+}
+
+variable "catalog" {
+  type    = string
+  default = "catalog"
+}
+
+variable "project" {
+  type    = string
+  default = "project"
+}
