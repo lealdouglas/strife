@@ -33,3 +33,16 @@ variable "aad_groups" {
   type        = list(string)
   default     = ["data_engineer"]
 }
+
+
+variable "domain_azure" {
+  type    = string
+  default = "gabygouveahotmail.onmicrosoft.com"
+}
+
+variable "user_principal_name" {
+  type    = string
+  default = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
+
+}
+
