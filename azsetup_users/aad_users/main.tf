@@ -14,6 +14,29 @@ resource "azuread_user" "fulano" {
   user_principal_name = "fulano@gabygouveahotmail.onmicrosoft.com"
 }
 
+resource "azuread_group_member" "user4_member" {
+  group_object_id  = azuread_group.data_engineers.id
+  member_object_id = azuread_user.fulano.object_id
+}
+
+resource "azuread_group_member" "user5_member" {
+  group_object_id  = azuread_group.data_engineers.id
+  member_object_id = "ea4d5a73-3bb2-4de6-ad62-6dcbf9234d6b"
+}
+
+resource "azuread_user" "teste" {
+  display_name        = "Gabriella B. Gouvêa"
+  user_principal_name = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
+}
+
+output "teste" {
+  value = azuread_user.teste.display_name
+}
+
+output "teste" {
+  value = azuread_user.teste.mail_nickname
+}
+
 # # Criando um grupo de Data Engineers
 # resource "azuread_group" "account_unity_admin" {
 #   display_name     = "account_unity_admin"
@@ -42,12 +65,3 @@ resource "azuread_user" "fulano" {
 #   rotate_when_changed  = { rotation = time_rotating.month.id }
 # }
 
-resource "azuread_group_member" "user4_member" {
-  group_object_id  = azuread_group.data_engineers.id
-  member_object_id = azuread_user.fulano.object_id
-}
-
-# resource "azuread_group_member" "user5_member" {
-#   group_object_id  = azuread_group.account_unity_admin.id
-#   member_object_id = data.azurerm_client_config.current.object_id
-# }
