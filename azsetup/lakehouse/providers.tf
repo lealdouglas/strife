@@ -8,8 +8,9 @@ provider "azurerm" {
 
 // Provider for databricks workspace
 provider "databricks" {
-  alias = "workspace"
-  host  = azurerm_databricks_workspace.this.workspace_url
+  alias     = "workspace"
+  host      = azurerm_databricks_workspace.this.workspace_url
+  auth_type = "azure-cli"
 }
 
 // Provider for databricks account

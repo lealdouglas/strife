@@ -110,6 +110,7 @@ resource "azurerm_eventhub_namespace" "this" {
 
 
 data "databricks_group" "admins" {
+  provider     = databricks.workspace
   display_name = "admins"
 }
 
