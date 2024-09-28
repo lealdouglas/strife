@@ -155,7 +155,7 @@ resource "databricks_external_location" "dev_location" {
 
 # Cria uma localização externa para ser usada como armazenamento raiz pelo catálogo de desenvolvimento
 # Create an external location to be used as root storage by dev catalog
-resource "databricks_external_location" "dev_location" {
+resource "databricks_external_location" "raw_location" {
   name = "raw-catalog-external-location"
   url = format("abfss://%s@%s.dfs.core.windows.net/",
     local.container_raw,
@@ -165,6 +165,13 @@ resource "databricks_external_location" "dev_location" {
   depends_on      = [databricks_storage_credential.external_mi]
 }
 
+resource "databricks_grants" "ext_loc_raw" {
+  external_location = databricks_external_location.raw_location.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES"]
+  }
+}
 
 # Cria o catálogo de desenvolvimento
 # Create dev environment catalog

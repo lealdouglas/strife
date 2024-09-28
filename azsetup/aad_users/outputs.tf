@@ -9,3 +9,4 @@ output "user" {
 output "principal" {
   value = "[tf-dtmaster-dougsll] Usuario principal vinculado ao grupo criado : ${data.azuread_user.principal_name.display_name}"
 }
+    
