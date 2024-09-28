@@ -3,7 +3,7 @@ output "grupo" {
 }
 
 output "user" {
-  value = "[tf-dtmaster-dougsll] Usuario criado : ${azuread_user.fulano.display_name}"
+  value = "[tf-dtmaster-dougsll] Novo usuario criado : ${azuread_user.fulano.display_name}"
 }
 
 output "principal" {
