@@ -29,11 +29,11 @@ resource "azuread_user" "teste" {
   user_principal_name = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
 }
 
-output "teste" {
+output "tessdte" {
   value = azuread_user.teste.display_name
 }
 
-output "teste" {
+output "tesdte" {
   value = azuread_user.teste.mail_nickname
 }
 
