@@ -10,7 +10,7 @@ resource "azuread_group" "data_engineers" {
 
 resource "azuread_user" "fulano" {
   display_name        = "Fulano"
-  password            = "Fulano@2707!"
+  password            = "SecretP@sswd99!"
   user_principal_name = "fulano@gabygouveahotmail.onmicrosoft.com"
 }
 
