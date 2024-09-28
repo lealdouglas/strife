@@ -23,6 +23,7 @@ Este repositório contém o seguinte:
      - [Step 5. Execute a action Strife Lakehouse](#step-5-execute-a-action-strife-lakehouse)
      - [Step 6. Recupere Account ID do Unity Catalog e habilite Account Admin](#step-6-recupere-account-id-do-unity-catalog-e-habilite-account-admin)
      - [Step 7. Execute a action Strife ADB Unity Catalog](#step-7-execute-a-action-strife-adb-unity-catalog)
+7. [Referências](#7-referências)
 
 &nbsp;
 
@@ -310,6 +311,12 @@ Nessa action, será configurado:
 > [!NOTE]
 > Caso não consiga enxergar o catálogo criado, adicione sua conta principal ao grupo **data_engineer** a nível de console e aguarde alguns segundos.
 
-```
+## 7 Referências
 
-```
+- [Terraform Documentation](https://www.terraform.io/docs/index.html)
+- [Azure Databricks Documentation](https://learn.microsoft.com/en-us/azure/databricks/)
+- [Azure Event Hub Documentation](https://learn.microsoft.com/en-us/azure/event-hubs/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Medallion Architecture](https://www.databricks.com/br/glossary/medallion-architecture)
+- [Creating secrets for a repository](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
+- [Create an Azure service principal with Azure CLI](https://learn.microsoft.com/en-us/cli/azure/azure-cli-sp-tutorial-1?tabs=bash)
