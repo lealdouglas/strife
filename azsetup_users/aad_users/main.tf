@@ -35,7 +35,7 @@ resource "azuread_group" "example" {
   security_enabled = true
 
   members = [
-    data.azuread_user.example.id,
+    "ea4d5a73-3bb2-4de6-ad62-6dcbf9234d6b",
     /* more users */
   ]
 }
