@@ -19,6 +19,12 @@ provider "azurerm" {
   features {}
 }
 
+# Obtém a configuração atual do cliente Azure
+# Get the current Azure client configuration
+data "azurerm_client_config" "current" {
+}
+
+
 # Obtém informações do workspace Databricks
 # Get Databricks workspace information
 data "azurerm_databricks_workspace" "this" {
@@ -60,12 +66,11 @@ data "databricks_service_principal" "sp" {
 # Assign account admin role to service principal
 resource "databricks_service_principal_role" "account_admin" {
   provider             = databricks.azure_account
-  service_principal_id = data.databricks_service_principal.sp.id
+  service_principal_id = data.azurerm_client_config.current.object_id
   role                 = "account_admin"
 }
 
 data "databricks_group" "admins" {
-  provider     = databricks.workspace
   display_name = "admins"
 }
 
