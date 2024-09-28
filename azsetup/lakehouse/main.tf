@@ -22,10 +22,10 @@ data "azurerm_client_config" "current" {
 
 # Módulo que cria o metastore UC e adiciona usuários, grupos e principais de serviço à conta Azure Databricks
 # Module creating UC metastore and adding users, groups and service principals to Azure Databricks account
-module "azure_aad_users" {
-  source        = "./modules/azure-aad-users"
-  suffix_concat = local.suffix_concat
-}
+# module "azure_aad_users" {
+#   source        = "./modules/azure-aad-users"
+#   suffix_concat = local.suffix_concat
+# }
 
 # Cria um grupo de recursos
 # Create a resource group
