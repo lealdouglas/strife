@@ -1,10 +1,10 @@
 data "azurerm_client_config" "current" {
 }
 
-resource "azuread_user" "fulano" {
-  display_name        = "Fulano"
+resource "azuread_user" "luke" {
+  display_name        = "Luke Skywalker"
   password            = "SecretP@sswd99!"
-  user_principal_name = "fulano@${var.domain_azure}"
+  user_principal_name = "luke@${var.domain_azure}"
 }
 
 data "azuread_user" "principal_name" {
@@ -24,4 +24,17 @@ resource "azuread_group" "dt" {
   ]
 
   depends_on = [azuread_user.fulano, data.azuread_user.principal_name]
+}
+
+data "databricks_group" "admins" {
+  display_name = "admins"
+}
+
+resource "databricks_user" "me" {
+  user_name = var.user_principal_name
+}
+
+resource "databricks_group_member" "i-am-admin" {
+  group_id  = data.databricks_group.admins.id
+  member_id = databricks_user.me.id
 }
