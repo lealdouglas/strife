@@ -30,11 +30,12 @@ data "azuread_user" "example" {
 }
 
 resource "azuread_group" "example" {
-  display_name     = "my_group"
+  display_name     = "MyGroup"
+  owners           = [data.azuread_client_config.current.object_id]
   security_enabled = true
-}
 
-resource "azuread_group_member" "example" {
-  group_object_id  = azuread_group.example.id
-  member_object_id = data.azuread_user.example.id
+  members = [
+    data.azuread_user.example.id,
+    /* more users */
+  ]
 }
