@@ -2,22 +2,34 @@
 
 ## Introdução
 
-Bem-vindo à documentação do Strife, Terraform que implanta recursos necessários para explorar um ambiente de plataforma de dados na azure,no qual tem como objetivo entregar uma plataforma de dados simplificada para uso eficiente.
+Bem-vindo à documentação do Strife, Terraform que implanta recursos necessários para explorar um ambiente de plataforma de dados na azure, no qual tem como objetivo entregar uma plataforma de dados simplificada para uso eficiente.
 
-Esse projeto foi elaborado para o projeto [Data Master Douglas Leal](https://carlton.readthedocs.io/pt-br/latest/03_projeto/), onde Strgie é utilizado como [script padrão para setup do ambiente](https://carlton.readthedocs.io/pt-br/latest/03_projeto/#33-ideacao-do-projeto).
-
-&nbsp;
+Esse projeto foi elaborado para o projeto [Data Master Douglas Leal](https://carlton.readthedocs.io/pt-br/latest/03_projeto/), onde Strife é utilizado como [script padrão para setup do ambiente](https://carlton.readthedocs.io/pt-br/latest/03_projeto/#33-ideacao-do-projeto).
 
 Este repositório contém o seguinte:
 
-1. [Objetivo do Case](#1-objetivo-do-case)
-2. [Casos de Uso](#2-casos-de-uso)
+1. [Introdução](#introdução)
+2. [Objetivo do Case](#1-objetivo-do-case)
+3. [Casos de Uso](#2-casos-de-uso)
+4. [Estrutura do Repositório](#3-estrutura-do-repositório)
+5. [Funcionalidades Principais](#4-funcionalidades-principais)
+6. [Usando o Repositório](#5-usando-repositório)
+7. [Instruções para Configuração e Execução do Projeto](#6-instruções-para-configuração-e-execução-do-projeto)
+   - [Pré-requisitos](#61-pré-requisitos)
+   - [Passos de Configuração](#62-passos-de-configuração)
+     - [Step 1. Utilize o repos template](#step-1-utilize-o-repos-template)
+     - [Step 2. Configure arquivo de Setup Infraestrutura Lakehouse](#step-2-configure-arquivo-de-setup-infraestrutura-lakehouse)
+     - [Step 3. Configure usuário de serviço (Service Principal)](#step-3-configure-usuário-de-serviço-service-principal)
+     - [Step 4. Configure as secrets no GIT](#step-4-configure-as-secrets-no-git)
+     - [Step 5. Execute a action Strife Lakehouse](#step-5-execute-a-action-strife-lakehouse)
+     - [Step 6. Recupere Account ID do Unity Catalog e habilite Account Admin](#step-6-recupere-account-id-do-unity-catalog-e-habilite-account-admin)
+     - [Step 7. Execute a action Strife ADB Unity Catalog](#step-7-execute-a-action-strife-adb-unity-catalog)
 
 &nbsp;
 
 ## 1. Objetivo do Case
 
-Este projeto visa desenvolver uma solução de engenharia de dados com o principal objetivo de preparar um ambiente para estudo e exploração de dados baseado em nuvem em poucos minutos. O projeto simula a criação de um ambiente conceitual de dados para um domínio de dados, configurando o ambiente para realizar ações como pipelines de ingestão e exploração de dados.
+Este projeto visa desenvolver uma solução de engenharia de dados com o principal objetivo de preparar um ambiente para estudo e exploração de dados baseado em nuvem em poucos minutos. O projeto simula a criação de um ambiente conceitual de dados para um domínio de dados, configurando o ambiente para realizar ações como pipelines de ingestão e exploração de dados. Strife é responsável por entregar esse ambiente pronto para exploração e uso.
 
 ## 2. Casos de Uso
 
@@ -25,24 +37,97 @@ A solução é projetada para preparar um ambiente de estudo e exploração de d
 
 ## 3. Estrutura do repositório<a id="estrutura"></a>
 
-O repositório está organizado da seguinte forma:
+Este documento descreve a estrutura de pastas do projeto e a finalidade de cada diretório e arquivo. O objetivo é fornecer uma visão geral clara e organizada do projeto para facilitar a navegação e a compreensão.
 
-- `lakehouse` - Implementacao dos recursos base para criar o ambiente de exploratório de dados na azure.
-- `lakehouse\modules` - Criacao de usuário e grupo no aad.
-- `azureadb-uc` - Configuracao do unity catalog e sincronizacao dos usuarios aad para account databricks.
-- `azureadb-uc\modules` - Configuracao do metastore e external object do unity catalog.
-- `cicd-pipelines` - Action para implementar terraform em seu ambiente azure.
+### 3.1 Estrutura de Pastas
+
+```plaintext
+.
+├── lakehouse
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   └── modules
+│       ├── azure-aad-users
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+├── azureadb-uc
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   └── modules
+│       ├── metastore
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       ├── external-object
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+├── cicd-pipelines
+│   ├── .github
+│   │   └── workflows
+│   │       ├── lakehouse.yml
+│   │       └── azureadb-uc.yml
+└── README.md
+```
+
+### 3.2 Descrição das Pastas e Arquivos
+
+1. `lakehouse/`
+   Este diretório contém os arquivos principais para a configuração do ambiente de exploração de dados na Azure.
+
+- main.tf: Arquivo principal do Terraform que define os recursos a serem criados.
+- variables.tf: Define as variáveis usadas no main.tf.
+- outputs.tf: Define as saídas dos recursos criados.
+
+  1.1. `lakehouse/modules/azure-aad-users/`
+  Este subdiretório contém módulos para a criação de usuários e grupos no Azure Active Directory (AAD).
+
+- main.tf: Arquivo principal do módulo que define os recursos AAD.
+- variables.tf: Define as variáveis usadas no módulo.
+- outputs.tf: Define as saídas dos recursos criados pelo módulo.
+
+2. `azureadb-uc/`
+   Este diretório contém os arquivos principais para a configuração do Unity Catalog e a sincronização dos usuários AAD com a conta Databricks.
+
+- main.tf: Arquivo principal do Terraform que define os recursos a serem criados.
+- variables.tf: Define as variáveis usadas no main.tf.
+- outputs.tf: Define as saídas dos recursos criados.
+
+  2.2. `azureadb-uc/modules/metastore/`
+  Este subdiretório contém módulos para a configuração do metastore do Unity Catalog.
+
+- main.tf: Arquivo principal do módulo que define os recursos do metastore.
+- variables.tf: Define as variáveis usadas no módulo.
+- outputs.tf: Define as saídas dos recursos criados pelo módulo.
+
+  2.3. `azureadb-uc/modules/external-object/`
+  Este subdiretório contém módulos para a configuração de objetos externos no Unity Catalog.
+
+- main.tf: Arquivo principal do módulo que define os recursos externos.
+- variables.tf: Define as variáveis usadas no módulo.
+- outputs.tf: Define as saídas dos recursos criados pelo módulo.
+
+3. `cicd-pipelines/`
+   Este diretório contém os arquivos de configuração para pipelines de CI/CD usando GitHub Actions.
+
+4. `.github/workflows/`
+   Este subdiretório contém os arquivos de workflow do GitHub Actions.
+
+- lakehouse.yml: Define o pipeline de CI/CD para o diretório lakehouse.
+- azureadb-uc.yml: Define o pipeline de CI/CD para o diretório azureadb-uc.
 
 ## 4. Funcionalidades Principais
 
 Esse script entrega,
 
-- `Resource Group` - Grupo de recurso do projeto
-- `Storage account Gen2 - Raw` - Storage account para incluir os arquivos de entrada.
-- `Workspace Databricks` - Workspace para explorar os dados e ambiente.
-- `Account Databricks` - unity catalog e usuarios sincronizados na workspace.
-- `Metastore Databricks` - Metastore para gestao do unity catalog associado com a workspace criada.
-- `Storage Account Gen2 - Layers` - Storage account para uso das camadas: bronze, silver e gold.
+- **Resource Group** - Grupo de recurso do projeto
+- **Storage account Gen2** - Storage account para gestão do metastore, raw, e medalhão containers.
+- **Workspace Databricks** - Workspace para explorar os dados e ambiente.
+- **Account Databricks** - unity catalog e usuarios sincronizados na workspace.
+- **Metastore Databricks** - Metastore para gestao do unity catalog associado com a workspace criada.
 
 ## 5. Usando repositório<a id="iniciorapido"></a>
 
@@ -130,16 +215,18 @@ Crie um usuário de serviço na Azure (Service Principal) com as seguintes atrib
 
 <p align="center">
   <img src="assets/gif/global.gif" width="900" alt="ideacao do projeto">
-</p> 
-    
-#### Step 4. Configure as secrets no GIT 
+</p>
+
+#### Step 4. Configure as secrets no GIT
+
 Configure as variaveis de ambiente (secrets) em seu repositório Git,
-  Para configurar as variáveis, acesse: [Crie secrets para um repositório](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)  
-  - **TF_ARM_TENANT_ID**, conta na azure (tenant)
-  - **TF_ARM_SUBSCRIPTION_ID**, subscrição da conta
-  - **TF_ARM_CLIENT_ID**, ID do usuário de serviço com permissão para criar recursos e grupos no AAD.
-  - **TF_ARM_CLIENT_SECRET**, Secret do usuário de serviço com permissão para criar recursos e grupos no AAD.
-  - **ADB_ACCOUNT_ID**, ID da console Unity Catalog do Databricks.
+Para configurar as variáveis, acesse: [Crie secrets para um repositório](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
+
+- **TF_ARM_TENANT_ID**, conta na azure (tenant)
+- **TF_ARM_SUBSCRIPTION_ID**, subscrição da conta
+- **TF_ARM_CLIENT_ID**, ID do usuário de serviço com permissão para criar recursos e grupos no AAD.
+- **TF_ARM_CLIENT_SECRET**, Secret do usuário de serviço com permissão para criar recursos e grupos no AAD.
+- **ADB_ACCOUNT_ID**, ID da console Unity Catalog do Databricks.
 
 <p align="center">
   <img src="assets/gif/tenant.gif" width="900" alt="ideacao do projeto">
@@ -225,3 +312,7 @@ Nessa action, será configurado:
 
 > [!NOTE]
 > Caso não consiga enxergar o catálogo criado, adicione sua conta principal ao grupo **data_engineer** a nível de console e aguarde alguns segundos.
+
+```
+
+```
