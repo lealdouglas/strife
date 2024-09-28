@@ -31,7 +31,7 @@ data "azuread_user" "example" {
 
 resource "azuread_group" "example" {
   display_name     = "MyGroup"
-  owners           = [data.azuread_client_config.current.object_id]
+  owners           = [data.azurerm_client_config.current.object_id]
   security_enabled = true
 
   members = [
