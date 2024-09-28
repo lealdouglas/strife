@@ -10,7 +10,7 @@ resource "azuread_group" "data_engineers" {
 
 resource "azuread_user" "fulano" {
   display_name        = "Fulano"
-  password            = "fulano123"
+  password            = "Fulano@2707!"
   user_principal_name = "fulano@gabygouveahotmail.onmicrosoft.com"
 }
 
@@ -24,18 +24,17 @@ resource "azuread_group_member" "user5_member" {
   member_object_id = "ea4d5a73-3bb2-4de6-ad62-6dcbf9234d6b"
 }
 
-resource "azuread_user" "teste" {
-  display_name        = "Gabriella B. Gouvêa"
-  user_principal_name = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
-}
+# resource "azuread_user" "teste" {
+#   user_principal_name = ["gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"]
+# }
 
-output "tessdte" {
-  value = azuread_user.teste.display_name
-}
+# output "tessdte" {
+#   value = azuread_user.teste.display_name
+# }
 
-output "tesdte" {
-  value = azuread_user.teste.mail_nickname
-}
+# output "tesdte" {
+#   value = azuread_user.teste.mail_nickname
+# }
 
 # # Criando um grupo de Data Engineers
 # resource "azuread_group" "account_unity_admin" {
