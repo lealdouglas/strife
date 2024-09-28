@@ -4,11 +4,11 @@ data "azurerm_client_config" "current" {
 resource "azuread_user" "fulano" {
   display_name        = "Fulano"
   password            = "SecretP@sswd99!"
-  user_principal_name = "fulano@gabygouveahotmail.onmicrosoft.com"
+  user_principal_name = "fulano@${var.domain_azure}"
 }
 
-data "azuread_user" "you" {
-  user_principal_name = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
+data "azuread_user" "principal_name" {
+  user_principal_name = var.user_principal_name
 }
 
 resource "azuread_group" "dt" {
@@ -18,9 +18,10 @@ resource "azuread_group" "dt" {
   security_enabled = true
 
   members = [
-    data.azuread_user.you.object_id,
+    data.azuread_user.principal_name.object_id,
+    azuread_user.fulano.object_id
     /* more users */
   ]
 
-  depends_on = [azuread_user.fulano, data.azuread_user.you]
+  depends_on = [azuread_user.fulano, data.azuread_user.principal_name]
 }
