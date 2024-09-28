@@ -35,7 +35,9 @@ resource "azuread_group" "example" {
   security_enabled = true
 
   members = [
-    "ea4d5a73-3bb2-4de6-ad62-6dcbf9234d6b",
+    data.azuread_user.example.object_id,
     /* more users */
   ]
+
+  depends_on = [data.azuread_user.example]
 }
