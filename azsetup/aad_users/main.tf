@@ -25,17 +25,3 @@ resource "azuread_group" "dt" {
 
   depends_on = [azuread_user.this, data.azuread_user.principal_name]
 }
-
-data "databricks_group" "admins" {
-  provider     = databricks.workspace
-  display_name = "admins"
-}
-
-resource "databricks_user" "me" {
-  user_name = var.user_principal_name
-}
-
-resource "databricks_group_member" "i-am-admin" {
-  group_id  = data.databricks_group.admins.id
-  member_id = databricks_user.me.id
-}
