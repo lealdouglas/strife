@@ -22,7 +22,7 @@ provider "azurerm" {
 # Obtém informações do workspace Databricks
 # Get Databricks workspace information
 data "azurerm_databricks_workspace" "this" {
-  name                = local.databricks_workspace_name
+  name                = local.databricks_name
   resource_group_name = local.resource_group
 }
 
@@ -99,8 +99,3 @@ resource "databricks_permissions" "cluster_usage" {
   }
 }
 
-# Saída da URL do cluster
-# Output the cluster URL
-output "cluster_url" {
-  value = databricks_cluster.this.url
-}

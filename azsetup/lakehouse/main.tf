@@ -30,7 +30,7 @@ module "azure_aad_users" {
 # Cria um grupo de recursos
 # Create a resource group
 resource "azurerm_resource_group" "this" {
-  name     = "rsg${local.suffix_concat}"
+  name     = local.resource_group
   location = var.location
   tags     = local.tags
 }
@@ -38,7 +38,7 @@ resource "azurerm_resource_group" "this" {
 # Cria uma conta de armazenamento gen2 no grupo de recursos
 # Create a storage account gen2 in the resource group
 resource "azurerm_storage_account" "this" {
-  name                      = "sta${local.suffix_concat}"
+  name                      = local.storage_account
   resource_group_name       = azurerm_resource_group.this.name
   location                  = var.location
   account_tier              = "Standard"
@@ -56,7 +56,7 @@ resource "azurerm_storage_account" "this" {
 resource "azurerm_databricks_workspace" "this" {
   location                    = azurerm_resource_group.this.location
   resource_group_name         = azurerm_resource_group.this.name
-  name                        = "adb${local.suffix_concat}"
+  name                        = local.databricks_name
   sku                         = "premium"
   managed_resource_group_name = "rsgadbmanaged"
   tags                        = local.tags
@@ -65,7 +65,7 @@ resource "azurerm_databricks_workspace" "this" {
 # Cria uma identidade gerenciada do Azure para ser usada pelo metastore do Unity Catalog
 # Create an Azure managed identity to be used by Unity Catalog metastore
 resource "azurerm_databricks_access_connector" "unity" {
-  name                = "adb${local.suffix_concat}-mi"
+  name                = "${local.databricks_name}-mi"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   identity {
@@ -76,7 +76,7 @@ resource "azurerm_databricks_access_connector" "unity" {
 # Cria um contêiner na conta de armazenamento para ser usado pelo metastore do Unity Catalog como armazenamento raiz
 # Create a container in the storage account to be used by Unity Catalog metastore as root storage
 resource "azurerm_storage_container" "unity_catalog" {
-  name                  = "ctr${local.suffix_concat}mtst"
+  name                  = local.container_metastore
   storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
@@ -84,7 +84,7 @@ resource "azurerm_storage_container" "unity_catalog" {
 # Cria um contêiner na conta de armazenamento para ser usado pelo metastore do Unity Catalog como armazenamento raiz
 # Create a container in the storage account to be used by Unity Catalog metastore as root storage
 resource "azurerm_storage_container" "raw" {
-  name                  = "ctr${local.suffix_concat}raw"
+  name                  = local.container_raw
   storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
@@ -99,8 +99,8 @@ resource "azurerm_role_assignment" "mi_data_contributor" {
 
 # Cria um namespace do Event Hub
 # Create an Event Hub namespace
-resource "azurerm_eventhub_namespace" "example" {
-  name                = "eth${local.suffix_concat}"
+resource "azurerm_eventhub_namespace" "this" {
+  name                = local.event_hub
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
   sku                 = "Standard"

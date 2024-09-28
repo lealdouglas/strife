@@ -22,7 +22,7 @@ provider "azurerm" {
 # Obtém informações do workspace Databricks
 # Get Databricks workspace information
 data "azurerm_databricks_workspace" "this" {
-  name                = local.databricks_workspace_name
+  name                = local.databricks_name
   resource_group_name = local.resource_group
 }
 
@@ -67,15 +67,17 @@ resource "databricks_service_principal_role" "account_admin" {
 # Módulo que cria o metastore UC e adiciona usuários, grupos e principais de serviço à conta Azure Databricks
 # Module creating UC metastore and adding users, groups and service principals to Azure Databricks account
 module "metastore_and_users" {
-  source                    = "./modules/adb-metastore-and-users"
-  databricks_workspace_name = local.databricks_workspace_name
-  resource_group            = local.resource_group
-  aad_groups                = var.aad_groups
-  account_id                = var.account_id
-  azure_client_id           = var.azure_client_id
-  azure_client_secret       = var.azure_client_secret
-  azure_tenant_id           = var.azure_tenant_id
-  prefix                    = local.suffix_concat
+  source              = "./modules/adb-metastore-and-users"
+  databricks_name     = local.databricks_name
+  resource_group      = local.resource_group
+  aad_groups          = var.aad_groups
+  account_id          = var.account_id
+  azure_client_id     = var.azure_client_id
+  azure_client_secret = var.azure_client_secret
+  azure_tenant_id     = var.azure_tenant_id
+  prefix              = local.suffix_concat
+  container_metastore = local.container_metastore
+  storage_account     = local.storage_account
 }
 
 # Variáveis locais para usuários e principais de serviço
@@ -123,7 +125,7 @@ resource "databricks_mws_permission_assignment" "workspace_user_groups" {
 # Cria um contêiner na conta de armazenamento para ser usado pelo catálogo de desenvolvimento como armazenamento raiz
 # Create a container in the storage account to be used by dev catalog as root storage
 resource "azurerm_storage_container" "dev_catalog" {
-  name                  = "container-catalog"
+  name                  = local.container_catalog
   storage_account_name  = module.metastore_and_users.azurerm_storage_account_unity_catalog.name
   container_access_type = "private"
 }
@@ -144,12 +146,25 @@ resource "databricks_storage_credential" "external_mi" {
 resource "databricks_external_location" "dev_location" {
   name = "dtmaster-catalog-external-location"
   url = format("abfss://%s@%s.dfs.core.windows.net/",
-    azurerm_storage_container.dev_catalog.name,
+    local.container_catalog,
   module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
   credential_name = databricks_storage_credential.external_mi.id
   comment         = "External location used by dev catalog as root storage"
   depends_on      = [databricks_storage_credential.external_mi]
 }
+
+# Cria uma localização externa para ser usada como armazenamento raiz pelo catálogo de desenvolvimento
+# Create an external location to be used as root storage by dev catalog
+resource "databricks_external_location" "dev_location" {
+  name = "raw-catalog-external-location"
+  url = format("abfss://%s@%s.dfs.core.windows.net/",
+    local.container_raw,
+  module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
+  credential_name = databricks_storage_credential.external_mi.id
+  comment         = "External location used by dev catalog as root storage"
+  depends_on      = [databricks_storage_credential.external_mi]
+}
+
 
 # Cria o catálogo de desenvolvimento
 # Create dev environment catalog

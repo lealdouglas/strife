@@ -27,16 +27,8 @@ data "azurerm_resource_group" "this" {
 # Obtém informações do workspace Databricks
 # Get Databricks workspace information
 data "azurerm_databricks_workspace" "this" {
-  name                = var.databricks_workspace_name
+  name                = var.databricks_name
   resource_group_name = var.resource_group
-}
-
-# Variáveis locais
-# Local variables
-locals {
-  databricks_workspace_host = data.azurerm_databricks_workspace.this.workspace_url
-  databricks_workspace_id   = data.azurerm_databricks_workspace.this.workspace_id
-  prefix                    = var.prefix
 }
 
 # Provedor para workspace Databricks
@@ -60,7 +52,7 @@ provider "databricks" {
 # Cria uma identidade gerenciada do Azure para ser usada pelo metastore do Unity Catalog
 # Create an Azure managed identity to be used by Unity Catalog metastore
 data "azurerm_databricks_access_connector" "unity" {
-  name                = "adb${local.prefix}-mi"
+  name                = "${var.databricks_name}-mi"
   resource_group_name = data.azurerm_resource_group.this.name
 }
 
@@ -68,14 +60,14 @@ data "azurerm_databricks_access_connector" "unity" {
 # Create a storage account gen2 in the resource group
 data "azurerm_storage_account" "unity_catalog" {
   resource_group_name = data.azurerm_resource_group.this.name
-  name                = "sta${local.prefix}"
+  name                = var.storage_account
 }
 
 # Cria um contêiner na conta de armazenamento para ser usado pelo metastore do Unity Catalog
 # Create a container in the storage account to be used by Unity Catalog metastore
 data "azurerm_storage_container" "unity_catalog" {
   storage_account_name = data.azurerm_storage_account.unity_catalog.name
-  name                 = "ctr${local.prefix}mtst"
+  name                 = var.container_metastore
 }
 
 # Cria o primeiro metastore do Unity Catalog

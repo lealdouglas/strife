@@ -1,4 +1,4 @@
-variable "databricks_workspace_name" {
+variable "databricks_name" {
   description = "Azure databricks workspace name"
 }
 
@@ -29,4 +29,12 @@ variable "azure_tenant_id" {
 
 variable "prefix" {
   description = "Prefix to be used with resouce names"
+}
+
+variable "container_metastore" {
+  description = "container_metastore"
+}
+
+variable "storage_account" {
+  description = "storage_account"
 }
