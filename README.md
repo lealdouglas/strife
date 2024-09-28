@@ -96,15 +96,15 @@ Este documento descreve a estrutura de pastas do projeto e a finalidade de cada 
 - variables.tf: Define as variáveis usadas no main.tf.
 - outputs.tf: Define as saídas dos recursos criados.
 
-  4. `azureadb-uc/modules/metastore/`
-     Este subdiretório contém módulos para a configuração do metastore do Unity Catalog.
+4. `azureadb-uc/modules/metastore/`
+   Este subdiretório contém módulos para a configuração do metastore do Unity Catalog.
 
 - main.tf: Arquivo principal do módulo que define os recursos do metastore.
 - variables.tf: Define as variáveis usadas no módulo.
 - outputs.tf: Define as saídas dos recursos criados pelo módulo.
 
-  5. `azureadb-uc/modules/external-object/`
-     Este subdiretório contém módulos para a configuração de objetos externos no Unity Catalog.
+5. `azureadb-uc/modules/external-object/`
+   Este subdiretório contém módulos para a configuração de objetos externos no Unity Catalog.
 
 - main.tf: Arquivo principal do módulo que define os recursos externos.
 - variables.tf: Define as variáveis usadas no módulo.
