@@ -74,46 +74,46 @@ Este documento descreve a estrutura de pastas do projeto e a finalidade de cada 
 
 ### 3.2 Descrição das Pastas e Arquivos
 
-1. `lakehouse/`
-   Este diretório contém os arquivos principais para a configuração do ambiente de exploração de dados na Azure.
+`lakehouse/`
+Este diretório contém os arquivos principais para a configuração do ambiente de exploração de dados na Azure.
 
 - main.tf: Arquivo principal do Terraform que define os recursos a serem criados.
 - variables.tf: Define as variáveis usadas no main.tf.
 - outputs.tf: Define as saídas dos recursos criados.
 
-2.  `lakehouse/modules/azure-aad-users/`
-    Este subdiretório contém módulos para a criação de usuários e grupos no Azure Active Directory (AAD).
+`lakehouse/modules/azure-aad-users/`
+Este subdiretório contém módulos para a criação de usuários e grupos no Azure Active Directory (AAD).
 
 - main.tf: Arquivo principal do módulo que define os recursos AAD.
 - variables.tf: Define as variáveis usadas no módulo.
 - outputs.tf: Define as saídas dos recursos criados pelo módulo.
 
-3. `azureadb-uc/`
-   Este diretório contém os arquivos principais para a configuração do Unity Catalog e a sincronização dos usuários AAD com a conta Databricks.
+`azureadb-uc/`
+Este diretório contém os arquivos principais para a configuração do Unity Catalog e a sincronização dos usuários AAD com a conta Databricks.
 
 - main.tf: Arquivo principal do Terraform que define os recursos a serem criados.
 - variables.tf: Define as variáveis usadas no main.tf.
 - outputs.tf: Define as saídas dos recursos criados.
 
-4. `azureadb-uc/modules/metastore/`
-   Este subdiretório contém módulos para a configuração do metastore do Unity Catalog.
+`azureadb-uc/modules/metastore/`
+Este subdiretório contém módulos para a configuração do metastore do Unity Catalog.
 
 - main.tf: Arquivo principal do módulo que define os recursos do metastore.
 - variables.tf: Define as variáveis usadas no módulo.
 - outputs.tf: Define as saídas dos recursos criados pelo módulo.
 
-5. `azureadb-uc/modules/external-object/`
-   Este subdiretório contém módulos para a configuração de objetos externos no Unity Catalog.
+`azureadb-uc/modules/external-object/`
+Este subdiretório contém módulos para a configuração de objetos externos no Unity Catalog.
 
 - main.tf: Arquivo principal do módulo que define os recursos externos.
 - variables.tf: Define as variáveis usadas no módulo.
 - outputs.tf: Define as saídas dos recursos criados pelo módulo.
 
-6. `cicd-pipelines/`
-   Este diretório contém os arquivos de configuração para pipelines de CI/CD usando GitHub Actions.
+`cicd-pipelines/`
+Este diretório contém os arquivos de configuração para pipelines de CI/CD usando GitHub Actions.
 
-7. `.github/workflows/`
-   Este subdiretório contém os arquivos de workflow do GitHub Actions.
+`.github/workflows/`
+Este subdiretório contém os arquivos de workflow do GitHub Actions.
 
 - lakehouse.yml: Define o pipeline de CI/CD para o diretório lakehouse.
 - azureadb-uc.yml: Define o pipeline de CI/CD para o diretório azureadb-uc.
