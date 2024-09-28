@@ -8,13 +8,12 @@ Esse projeto foi elaborado para o projeto [Data Master Douglas Leal](https://car
 
 Este repositório contém o seguinte:
 
-1. [Introdução](#introdução)
-2. [Objetivo do Case](#1-objetivo-do-case)
-3. [Casos de Uso](#2-casos-de-uso)
-4. [Estrutura do Repositório](#3-estrutura-do-repositório)
-5. [Funcionalidades Principais](#4-funcionalidades-principais)
-6. [Usando o Repositório](#5-usando-repositório)
-7. [Instruções para Configuração e Execução do Projeto](#6-instruções-para-configuração-e-execução-do-projeto)
+1. [Objetivo do Case](#1-objetivo-do-case)
+2. [Casos de Uso](#2-casos-de-uso)
+3. [Estrutura do Repositório](#3-estrutura-do-repositório)
+4. [Funcionalidades Principais](#4-funcionalidades-principais)
+5. [Usando o Repositório](#5-usando-repositório)
+6. [Instruções para Configuração e Execução do Projeto](#6-instruções-para-configuração-e-execução-do-projeto)
    - [Pré-requisitos](#61-pré-requisitos)
    - [Passos de Configuração](#62-passos-de-configuração)
      - [Step 1. Utilize o repos template](#step-1-utilize-o-repos-template)
@@ -136,31 +135,29 @@ Existem duas maneiras de usar este repositório:
 - Use repos template final [dougsll-datamaster](https://github.com/lealdouglas/dougsll-datamaster), no qual utiliza desse repositório para criar o ambiente exploratório.
 - Reutilize módulos deste repositório como referência para seu projeto individual.
 
-## 5. Instruções para Configuração e Execução do Projeto
+## 6. Instruções para Configuração e Execução do Projeto
 
-### 5.1 Pré-requisitos
+### 6.1 Pré-requisitos
 
 - Conta na Azure
 - Subscrição Azure, preferência sem uso.
-- Usuário de serviço (Service Principal), conforme [Step 3 - Configure usuário](https://github.com/lealdouglas/dougsll-datamaster?tab=readme-ov-file#step-3-configure-usu%C3%A1rio-de-servi%C3%A7o-service-principal) com as seguintes atribuições:
+- Usuário de serviço (Service Principal), conforme [Step 3 - Configure usuário](https://github.com/lealdouglas/strife?tab=readme-ov-file#step-3-configure-usu%C3%A1rio-de-servi%C3%A7o-service-principal) com as seguintes atribuições:
   - **Owner**, para criar e gerenciar recursos da azure.
   - **Global Administrator**, para sincronizar grupos e usuários do AAD no unity.
-  - **Account Admin**, após provisionar ambiente [Step 5 - Setup Lakehouse](https://github.com/lealdouglas/dougsll-datamaster?tab=readme-ov-file#step-5-execute-a-action-strife-lakehouse), para configurar Unity Catalog.
+  - **Account Admin**, após provisionar ambiente [Step 5 - Setup Lakehouse](https://github.com/lealdouglas/strife?tab=readme-ov-file#step-5-execute-a-action-strife-lakehouse), para configurar Unity Catalog.
 - Definição das variaveis de ambiente:
   - **TF_ARM_TENANT_ID**, conta na azure (tenant)
   - **TF_ARM_SUBSCRIPTION_ID**, subscrição da conta
   - **TF_ARM_CLIENT_ID**, ID do usuário de serviço com permissão para criar recursos e grupos.
   - **TF_ARM_CLIENT_SECRET**, Secret do usuário de serviço com permissão para criar recursos e grupos no AAD.
-  - **ADB_ACCOUNT_ID**, ID da console Unity Catalog do Databricks, saiba mais em [Step 6 - Recupere Account ID](https://github.com/lealdouglas/dougsll-datamaster?tab=readme-ov-file#step-6-recupere-account-id-do-unity-catalog-e-habilite-account-admin)
+  - **ADB_ACCOUNT_ID**, ID da console Unity Catalog do Databricks, saiba mais em [Step 6 - Recupere Account ID](https://github.com/lealdouglas/strife?tab=readme-ov-file#step-6-recupere-account-id-do-unity-catalog-e-habilite-account-admin)
 
 > [!NOTE]
 > Não é possível automatizar a captura do account_id via terraform, por isso, no step 6 apresentamos como recuperar manualmente.
 
 Utilize o tópico [Passos de Configuração](#42-passos-de-configuração) para dar sequência ao seu projeto.
 
-Consulte [como configurar service principal](#configserviceprincipal) para criar seu usuário de aplicacao.
-
-### 4.2 Passos de Configuração
+### 6.2 Passos de Configuração
 
 #### Step 1. Utilize o repos template
 
