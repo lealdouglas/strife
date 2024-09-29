@@ -7,9 +7,9 @@ resource "azuread_user" "this" {
   user_principal_name = "luke@${var.domain_azure}"
 }
 
-data "azuread_user" "principal_name" {
-  user_principal_name = var.user_principal_name
-}
+# data "azuread_user" "principal_name" {
+#   user_principal_name = var.user_principal_name
+# }
 
 resource "azuread_group" "dt" {
   display_name     = "data_engineer"
@@ -18,10 +18,10 @@ resource "azuread_group" "dt" {
   security_enabled = true
 
   members = [
-    data.azuread_user.principal_name.object_id,
     azuread_user.this.object_id
+    # data.azuread_user.principal_name.object_id,
     /* more users */
   ]
 
-  depends_on = [azuread_user.this, data.azuread_user.principal_name]
+  depends_on = [azuread_user.this]
 }
