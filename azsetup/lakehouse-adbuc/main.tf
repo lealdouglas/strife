@@ -64,11 +64,11 @@ data "databricks_service_principal" "sp" {
 
 # Atribui a função de administrador da conta ao principal de serviço
 # Assign account admin role to service principal
-resource "databricks_service_principal_role" "account_admin" {
-  provider             = databricks.azure_account
-  service_principal_id = data.azurerm_client_config.current.client_id
-  role                 = "account_admin"
-}
+# resource "databricks_service_principal_role" "account_admin" {
+#   provider             = databricks.azure_account
+#   service_principal_id = data.azurerm_client_config.current.client_id
+#   role                 = "account_admin"
+# }
 
 data "databricks_group" "admins" {
   display_name = "admins"
