@@ -5,8 +5,7 @@ variable "domain_azure" {
 
 variable "user_principal_name" {
   type    = string
-  default = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
-
+  default = "gaby-gouvea@hotmail.com"
 }
 
 

@@ -12,7 +12,7 @@ data "azuread_user" "principal_name" {
 }
 
 resource "azuread_group" "dt" {
-  display_name     = "data_engineer"
+  display_name     = "test" #data_engineer
   description      = "Group for Data Engineers"
   owners           = [data.azurerm_client_config.current.object_id]
   security_enabled = true
