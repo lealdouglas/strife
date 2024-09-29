@@ -70,18 +70,6 @@ data "databricks_service_principal" "sp" {
 #   role                 = "account_admin"
 # }
 
-# data "databricks_group" "admins" {
-#   display_name = "admins"
-# }
-
-# data "databricks_user" "me" {
-#   user_name = var.user_principal_name
-# }
-
-# resource "databricks_group_member" "i-am-admin" {
-#   group_id  = data.databricks_group.admins.id
-#   member_id = data.databricks_user.me.id
-# }
 
 # Módulo que cria o metastore UC e adiciona usuários, grupos e principais de serviço à conta Azure Databricks
 # Module creating UC metastore and adding users, groups and service principals to Azure Databricks account
@@ -269,4 +257,19 @@ resource "databricks_grants" "gold" {
     privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
   }
   depends_on = [databricks_catalog.dev]
+}
+
+
+data "databricks_group" "admins" {
+  display_name = "admins"
+}
+
+data "databricks_user" "me" {
+  user_name = var.user_principal_name
+}
+
+resource "databricks_group_member" "i-am-admin" {
+  group_id   = data.databricks_group.admins.id
+  member_id  = data.databricks_user.me.id
+  depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
 }
