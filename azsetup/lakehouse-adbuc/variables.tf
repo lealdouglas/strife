@@ -47,9 +47,9 @@ variable "azure_tenant_id" {
   default     = "000000"
 }
 
-variable "user_principal_name" {
-  type    = string
-  default = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
+# variable "user_principal_name" {
+#   type    = string
+#   default = "gaby-gouvea_hotmail.com#EXT#@gabygouveahotmail.onmicrosoft.com"
 
-}
+# }
 

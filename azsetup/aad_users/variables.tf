@@ -3,10 +3,10 @@ variable "domain_azure" {
   default = "gabygouveahotmail.onmicrosoft.com"
 }
 
-variable "user_principal_name" {
-  type    = string
-  default = "gaby-gouvea@hotmail.com"
-}
+# variable "user_principal_name" {
+#   type    = string
+#   default = "gaby-gouvea@hotmail.com"
+# }
 
 
 variable "domain" {
