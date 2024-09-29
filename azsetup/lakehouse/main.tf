@@ -93,7 +93,7 @@ resource "azurerm_storage_container" "raw" {
 # Create a container in the storage account to be used by dev catalog as root storage
 resource "azurerm_storage_container" "dev_catalog" {
   name                  = local.container_catalog
-  storage_account_name  = module.metastore_and_users.azurerm_storage_account_unity_catalog.name
+  storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
 
