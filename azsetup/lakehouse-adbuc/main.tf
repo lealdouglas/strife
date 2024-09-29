@@ -164,13 +164,7 @@ resource "databricks_external_location" "raw_location" {
   depends_on      = [databricks_storage_credential.external_mi]
 }
 
-resource "databricks_grants" "ext_loc_raw" {
-  external_location = databricks_external_location.raw_location.id
-  grant {
-    principal  = "data_engineer"
-    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES"]
-  }
-}
+
 
 # Cria o catálogo de desenvolvimento
 # Create dev environment catalog
@@ -194,6 +188,15 @@ resource "databricks_grants" "dev_catalog" {
     privileges = ["USE_CATALOG"]
   }
   depends_on = [databricks_catalog.dev]
+}
+
+resource "databricks_grants" "ext_loc_raw" {
+  external_location = databricks_external_location.raw_location.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES"]
+  }
+  depends_on = [module.metastore_and_users, databricks_external_location.raw_location]
 }
 
 # Cria o esquema para a camada bronze do datalake no ambiente de desenvolvimento
