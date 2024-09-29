@@ -8,6 +8,7 @@ locals {
   storage_account     = "stad${var.domain}"
   container_raw       = "ctrd${var.domain}raw"
   container_metastore = "ctrd${var.domain}mtst"
+  container_catalog   = "ctrd${var.domain}catlog"
   tags                = merge({ "domain" = var.domain }, { "project" = var.project }, { "env" = var.envv })
 
 }

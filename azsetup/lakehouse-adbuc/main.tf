@@ -141,14 +141,6 @@ resource "databricks_mws_permission_assignment" "workspace_user_groups" {
   depends_on   = [databricks_group_member.this]
 }
 
-# Cria um contêiner na conta de armazenamento para ser usado pelo catálogo de desenvolvimento como armazenamento raiz
-# Create a container in the storage account to be used by dev catalog as root storage
-resource "azurerm_storage_container" "dev_catalog" {
-  name                  = local.container_catalog
-  storage_account_name  = module.metastore_and_users.azurerm_storage_account_unity_catalog.name
-  container_access_type = "private"
-}
-
 # Cria credenciais de armazenamento para criar uma localização externa
 # Create storage credentials to create an external location
 resource "databricks_storage_credential" "external_mi" {
