@@ -7,19 +7,19 @@ resource "azuread_user" "this" {
   user_principal_name = "luke@${var.domain_azure}"
 }
 
-resource "azuread_user" "this" {
+resource "azuread_user" "this1" {
   display_name        = "Leia Skywalker"
   password            = "SecretP@sswd98!"
   user_principal_name = "leia@${var.domain_azure}"
 }
 
-resource "azuread_user" "this" {
+resource "azuread_user" "this2" {
   display_name        = "Obi Wan"
   password            = "SecretP@sswd97!"
   user_principal_name = "obi@${var.domain_azure}"
 }
 
-resource "azuread_user" "this" {
+resource "azuread_user" "this3" {
   display_name        = "Jar Jar binks"
   password            = "SecretP@sswd96!"
   user_principal_name = "jarjar@${var.domain_azure}"
@@ -36,7 +36,10 @@ resource "azuread_group" "dt" {
   security_enabled = true
 
   members = [
-    azuread_user.this.object_id
+    azuread_user.this.object_id,
+    azuread_user.this1.object_id,
+    azuread_user.this2.object_id,
+    azuread_user.this3.object_id
     # data.azuread_user.principal_name.object_id,
     /* more users */
   ]
