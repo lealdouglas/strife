@@ -7,6 +7,7 @@ resource "azuread_user" "this" {
   user_principal_name = "luke@${var.domain_azure}"
 }
 
+
 # data "azuread_user" "principal_name" {
 #   user_principal_name = var.user_principal_name
 # }
