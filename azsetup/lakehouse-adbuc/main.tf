@@ -70,18 +70,18 @@ data "databricks_service_principal" "sp" {
 #   role                 = "account_admin"
 # }
 
-data "databricks_group" "admins" {
-  display_name = "admins"
-}
+# data "databricks_group" "admins" {
+#   display_name = "admins"
+# }
 
-data "databricks_user" "me" {
-  user_name = var.user_principal_name
-}
+# data "databricks_user" "me" {
+#   user_name = var.user_principal_name
+# }
 
-resource "databricks_group_member" "i-am-admin" {
-  group_id  = data.databricks_group.admins.id
-  member_id = data.databricks_user.me.id
-}
+# resource "databricks_group_member" "i-am-admin" {
+#   group_id  = data.databricks_group.admins.id
+#   member_id = data.databricks_user.me.id
+# }
 
 # Módulo que cria o metastore UC e adiciona usuários, grupos e principais de serviço à conta Azure Databricks
 # Module creating UC metastore and adding users, groups and service principals to Azure Databricks account
