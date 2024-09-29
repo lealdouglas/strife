@@ -263,17 +263,17 @@ resource "databricks_grants" "gold" {
 }
 
 
-data "databricks_group" "admins" {
-  display_name = "admins"
-}
+# data "databricks_group" "admins" {
+#   display_name = "admins"
+# }
 
-data "databricks_user" "me" {
-  user_name  = var.user_principal_name
-  depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
-}
+# data "databricks_user" "me" {
+#   user_name  = var.user_principal_name
+#   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
+# }
 
-resource "databricks_group_member" "i-am-admin" {
-  group_id   = data.databricks_group.admins.id
-  member_id  = data.databricks_user.me.id
-  depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
-}
+# resource "databricks_group_member" "i-am-admin" {
+#   group_id   = data.databricks_group.admins.id
+#   member_id  = data.databricks_user.me.id
+#   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
+# }
