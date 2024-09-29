@@ -194,7 +194,7 @@ resource "databricks_grants" "ext_loc_raw" {
   external_location = databricks_external_location.raw_location.id
   grant {
     principal  = "data_engineer"
-    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES"]
+    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE FILES"]
   }
   depends_on = [module.metastore_and_users, databricks_external_location.raw_location]
 }
