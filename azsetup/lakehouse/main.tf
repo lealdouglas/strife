@@ -98,6 +98,14 @@ resource "azurerm_storage_container" "dev_catalog" {
 }
 
 
+# Cria um contêiner na conta de armazenamento para ser usado pelo metastore do Unity Catalog como armazenamento raiz
+# Create a container in the storage account to be used by Unity Catalog metastore as root storage
+resource "azurerm_storage_container" "log" {
+  name                  = local.container_log
+  storage_account_name  = azurerm_storage_account.this.name
+  container_access_type = "private"
+}
+
 # Atribui a função de Contribuidor de Dados do Blob de Armazenamento à identidade gerenciada para permitir que o Unity Catalog acesse o armazenamento
 # Assign the Storage Blob Data Contributor role to managed identity to allow Unity Catalog to access the storage
 resource "azurerm_role_assignment" "mi_data_contributor" {

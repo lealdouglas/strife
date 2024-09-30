@@ -160,10 +160,21 @@ resource "databricks_external_location" "raw_location" {
     local.container_raw,
   module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
   credential_name = databricks_storage_credential.external_mi.id
-  comment         = "External location used by dev catalog as root storage"
+  comment         = "External location used by raw as root storage"
   depends_on      = [databricks_storage_credential.external_mi]
 }
 
+# Cria uma localização externa para ser usada como armazenamento raiz pelo catálogo de desenvolvimento
+# Create an external location to be used as root storage by dev catalog
+resource "databricks_external_location" "log_location" {
+  name = "log-catalog-external-location"
+  url = format("abfss://%s@%s.dfs.core.windows.net/",
+    local.container_log,
+  module.metastore_and_users.azurerm_storage_account_unity_catalog.name)
+  credential_name = databricks_storage_credential.external_mi.id
+  comment         = "External location used by log as root storage"
+  depends_on      = [databricks_storage_credential.external_mi]
+}
 
 
 # Cria o catálogo de desenvolvimento
@@ -194,9 +205,18 @@ resource "databricks_grants" "ext_loc_raw" {
   external_location = databricks_external_location.raw_location.id
   grant {
     principal  = "data_engineer"
-    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE FILES"]
+    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE_FILES"]
   }
   depends_on = [module.metastore_and_users, databricks_external_location.raw_location]
+}
+
+resource "databricks_grants" "ext_loc_log" {
+  external_location = databricks_external_location.log_location.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["CREATE_EXTERNAL_TABLE", "READ_FILES", "WRITE_FILES"]
+  }
+  depends_on = [module.metastore_and_users, databricks_external_location.log_location]
 }
 
 # Cria o esquema para a camada bronze do datalake no ambiente de desenvolvimento
@@ -262,6 +282,27 @@ resource "databricks_grants" "gold" {
   depends_on = [databricks_catalog.dev]
 }
 
+resource "databricks_volume" "this" {
+  name             = "checkpoint_locations_table"
+  catalog_name     = databricks_catalog.dev.name
+  schema_name      = databricks_schema.bronze.name
+  volume_type      = "EXTERNAL"
+  storage_location = databricks_external_location.dev_location.url
+  comment          = "this volume is managed by terraform"
+  depends_on       = [module.metastore_and_users, databricks_external_location.dev_location, databricks_schema.bronze, databricks_catalog.dev]
+}
+
+
+# Concede permissões no catálogo de desenvolvimento
+# Grants on dev catalog
+resource "databricks_grants" "dev_catalog" {
+  catalog = databricks_volume.this.name
+  grant {
+    principal  = "data_engineer"
+    privileges = ["USE_CATALOG"]
+  }
+  depends_on = [databricks_volume.this]
+}
 
 # data "databricks_group" "admins" {
 #   display_name = "admins"
