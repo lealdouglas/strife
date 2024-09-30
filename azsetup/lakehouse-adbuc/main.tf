@@ -41,7 +41,8 @@ locals {
 # Provedor para workspace Databricks
 # Provider for Databricks workspace
 provider "databricks" {
-  host = local.databricks_workspace_host
+  alias = "workspace"
+  host  = local.databricks_workspace_host
 }
 
 # Provedor para conta Databricks
@@ -283,6 +284,7 @@ resource "databricks_grants" "gold" {
 }
 
 resource "databricks_volume" "this" {
+  provider         = databricks.workspace
   name             = "checkpoint_locations_table"
   catalog_name     = databricks_catalog.dev.name
   schema_name      = databricks_schema.bronze.name
