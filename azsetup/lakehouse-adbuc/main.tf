@@ -295,7 +295,7 @@ resource "databricks_volume" "this" {
 
 # Concede permissões no catálogo de desenvolvimento
 # Grants on dev catalog
-resource "databricks_grants" "dev_catalog" {
+resource "databricks_grants" "volume" {
   catalog = databricks_volume.this.id
   grant {
     principal  = "data_engineer"
