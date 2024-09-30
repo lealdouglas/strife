@@ -296,10 +296,10 @@ resource "databricks_volume" "this" {
 # Concede permissões no catálogo de desenvolvimento
 # Grants on dev catalog
 resource "databricks_grants" "dev_catalog" {
-  catalog = databricks_volume.this.name
+  catalog = databricks_volume.this.id
   grant {
     principal  = "data_engineer"
-    privileges = ["USE_CATALOG"]
+    privileges = ["WRITE_VOLUME", "READ_VOLUME"]
   }
   depends_on = [databricks_volume.this]
 }
