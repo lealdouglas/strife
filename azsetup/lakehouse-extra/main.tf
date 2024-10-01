@@ -41,7 +41,8 @@ locals {
 # Provedor para workspace Databricks
 # Provider for Databricks workspace
 provider "databricks" {
-  host = local.databricks_workspace_host
+  alias = "workspace"
+  host  = local.databricks_workspace_host
 }
 
 # Provedor para conta Databricks
@@ -55,6 +56,44 @@ provider "databricks" {
   azure_tenant_id     = var.azure_tenant_id
   auth_type           = "azure-client-secret"
 }
+
+# Cria o catálogo de desenvolvimento
+# Create dev environment catalog
+data "databricks_catalog" "dev" {
+  name = local.catalog_name
+}
+
+data "databricks_schema" "bronze" {
+  name = "bronze"
+}
+
+# Cria uma localização externa para ser usada como armazenamento raiz pelo catálogo de desenvolvimento
+# Create an external location to be used as root storage by dev catalog
+data "databricks_external_location" "dev_location" {
+  name = "dtmaster-catalog-external-location"
+}
+
+resource "databricks_volume" "this" {
+  provider         = databricks.workspace
+  name             = "checkpoint_locations_table"
+  catalog_name     = data.databricks_catalog.dev.name
+  schema_name      = data.databricks_schema.bronze.name
+  volume_type      = "EXTERNAL"
+  storage_location = data.databricks_external_location.dev_location.url
+  comment          = "this volume is managed by terraform"
+}
+
+# Concede permissões no catálogo de desenvolvimento
+# Grants on dev catalog
+resource "databricks_grants" "volume" {
+  catalog = databricks_volume.this.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["WRITE_VOLUME", "READ_VOLUME"]
+  }
+  depends_on = [databricks_volume.this]
+}
+
 
 # Obtém o principal de serviço do Databricks
 # Get Databricks service principal

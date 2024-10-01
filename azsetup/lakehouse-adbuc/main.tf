@@ -283,28 +283,28 @@ resource "databricks_grants" "gold" {
   depends_on = [databricks_catalog.dev]
 }
 
-resource "databricks_volume" "this" {
-  provider         = databricks.workspace
-  name             = "checkpoint_locations_table"
-  catalog_name     = databricks_catalog.dev.name
-  schema_name      = databricks_schema.bronze.name
-  volume_type      = "EXTERNAL"
-  storage_location = databricks_external_location.dev_location.url
-  comment          = "this volume is managed by terraform"
-  depends_on       = [module.metastore_and_users, databricks_external_location.dev_location, databricks_schema.bronze, databricks_catalog.dev]
-}
+# resource "databricks_volume" "this" {
+#   provider         = databricks.workspace
+#   name             = "checkpoint_locations_table"
+#   catalog_name     = databricks_catalog.dev.name
+#   schema_name      = databricks_schema.bronze.name
+#   volume_type      = "EXTERNAL"
+#   storage_location = databricks_external_location.dev_location.url
+#   comment          = "this volume is managed by terraform"
+#   depends_on       = [module.metastore_and_users, databricks_external_location.dev_location, databricks_schema.bronze, databricks_catalog.dev]
+# }
 
 
-# Concede permissões no catálogo de desenvolvimento
-# Grants on dev catalog
-resource "databricks_grants" "volume" {
-  catalog = databricks_volume.this.id
-  grant {
-    principal  = "data_engineer"
-    privileges = ["WRITE_VOLUME", "READ_VOLUME"]
-  }
-  depends_on = [databricks_volume.this]
-}
+# # Concede permissões no catálogo de desenvolvimento
+# # Grants on dev catalog
+# resource "databricks_grants" "volume" {
+#   catalog = databricks_volume.this.id
+#   grant {
+#     principal  = "data_engineer"
+#     privileges = ["WRITE_VOLUME", "READ_VOLUME"]
+#   }
+#   depends_on = [databricks_volume.this]
+# }
 
 # data "databricks_group" "admins" {
 #   display_name = "admins"
