@@ -41,7 +41,6 @@ locals {
 # Provedor para workspace Databricks
 # Provider for Databricks workspace
 provider "databricks" {
-  alias = "workspace"
   host  = local.databricks_workspace_host
 }
 
