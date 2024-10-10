@@ -7,8 +7,7 @@ terraform {
       # version = "=21.90.0"
     }
     databricks = {
-      source  = "databricks/databricks"
-      version = "=1.15.0"
+      source = "databricks/databricks"
     }
   }
 }
@@ -41,8 +40,7 @@ locals {
 # Provedor para workspace Databricks
 # Provider for Databricks workspace
 provider "databricks" {
-  alias = "workspace"
-  host  = local.databricks_workspace_host
+  host = local.databricks_workspace_host
 }
 
 # Provedor para conta Databricks
@@ -59,7 +57,6 @@ provider "databricks" {
 }
 
 resource "databricks_volume" "this" {
-  provider         = databricks.workspace
   name             = "checkpoint_locations_table"
   catalog_name     = local.catalog_name
   schema_name      = "bronze"
