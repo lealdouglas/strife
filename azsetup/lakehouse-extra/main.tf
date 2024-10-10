@@ -111,6 +111,6 @@ data "databricks_group" "data_engineer" {
 # }
 
 resource "databricks_group_member" "i-am-admin" {
-  group_id  = data.databricks_group.admins.id
+  group_id  = data.databricks_group.data_engineer.id
   member_id = data.databricks_service_principal.sp.application_id
 }
