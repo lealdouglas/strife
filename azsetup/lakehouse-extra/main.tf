@@ -95,13 +95,3 @@ resource "databricks_grants" "volume" {
   }
   depends_on = [databricks_volume.this]
 }
-
-
-data "databricks_grants" "bronze" {
-  schema = databricks_schema.bronze.id
-  grant {
-    principal  = "data_engineer"
-    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT", "CREATE_VOLUME"]
-  }
-  depends_on = [databricks_catalog.dev]
-}
