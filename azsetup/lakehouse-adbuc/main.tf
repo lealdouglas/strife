@@ -41,7 +41,7 @@ locals {
 # Provedor para workspace Databricks
 # Provider for Databricks workspace
 provider "databricks" {
-  host  = local.databricks_workspace_host
+  host = local.databricks_workspace_host
 }
 
 # Provedor para conta Databricks
@@ -235,7 +235,7 @@ resource "databricks_grants" "bronze" {
   schema = databricks_schema.bronze.id
   grant {
     principal  = "data_engineer"
-    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT"]
+    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT", "CREATE_VOLUME"]
   }
   depends_on = [databricks_catalog.dev]
 }

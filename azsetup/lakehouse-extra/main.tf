@@ -56,6 +56,26 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
+# Obtém o principal de serviço do Databricks
+# Get Databricks service principal
+data "databricks_service_principal" "sp" {
+  application_id = var.azure_client_id
+}
+
+data "databricks_group" "data_engineer" {
+  display_name = "data_engineer"
+}
+
+# data "databricks_user" "me" {
+#   user_name  = var.user_principal_name
+#   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
+# }
+
+resource "databricks_group_member" "i-am-admin" {
+  group_id  = data.databricks_group.data_engineer.id
+  member_id = data.databricks_service_principal.sp.application_id
+}
+
 resource "databricks_volume" "this" {
   name             = "checkpoint_locations_table"
   catalog_name     = local.catalog_name
@@ -77,22 +97,11 @@ resource "databricks_grants" "volume" {
 }
 
 
-# Obtém o principal de serviço do Databricks
-# Get Databricks service principal
-data "databricks_service_principal" "sp" {
-  application_id = var.azure_client_id
-}
-
-data "databricks_group" "data_engineer" {
-  display_name = "data_engineer"
-}
-
-# data "databricks_user" "me" {
-#   user_name  = var.user_principal_name
-#   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
-# }
-
-resource "databricks_group_member" "i-am-admin" {
-  group_id  = data.databricks_group.data_engineer.id
-  member_id = data.databricks_service_principal.sp.application_id
+data "databricks_grants" "bronze" {
+  schema = databricks_schema.bronze.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["USE_SCHEMA", "CREATE_FUNCTION", "CREATE_TABLE", "EXECUTE", "MODIFY", "SELECT", "CREATE_VOLUME"]
+  }
+  depends_on = [databricks_catalog.dev]
 }
