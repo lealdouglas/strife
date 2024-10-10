@@ -56,16 +56,6 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
-# Cria o catálogo de desenvolvimento
-# Create dev environment catalog
-data "databricks_catalog" "dev" {
-  name = local.catalog_name
-}
-
-data "databricks_schema" "bronze" {
-  name = "bronze"
-}
-
 # Cria uma localização externa para ser usada como armazenamento raiz pelo catálogo de desenvolvimento
 # Create an external location to be used as root storage by dev catalog
 data "databricks_external_location" "dev_location" {
@@ -74,8 +64,8 @@ data "databricks_external_location" "dev_location" {
 
 resource "databricks_volume" "this" {
   name             = "checkpoint_locations_table"
-  catalog_name     = data.databricks_catalog.dev.name
-  schema_name      = data.databricks_schema.bronze.name
+  catalog_name     = local.catalog_name
+  schema_name      = "bronze"
   volume_type      = "EXTERNAL"
   storage_location = data.databricks_external_location.dev_location.url
   comment          = "this volume is managed by terraform"
