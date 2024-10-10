@@ -58,9 +58,14 @@ provider "databricks" {
 
 # Obtém o principal de serviço do Databricks
 # Get Databricks service principal
+# data "databricks_service_principal" "sp" {
+#   application_id = var.azure_client_id
+# }
+
 data "databricks_service_principal" "sp" {
-  application_id = var.azure_client_id
+  display_name = var.azure_client_id
 }
+
 
 data "databricks_group" "data_engineer" {
   display_name = "data_engineer"
