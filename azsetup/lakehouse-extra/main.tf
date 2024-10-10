@@ -77,6 +77,7 @@ data "databricks_group" "data_engineer" {
 # }
 
 resource "databricks_group_member" "i-am-admin" {
+  provider  = databricks.azure_account
   group_id  = data.databricks_group.data_engineer.id
   member_id = data.databricks_service_principal.sp.id
 }
