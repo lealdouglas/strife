@@ -82,6 +82,12 @@ resource "databricks_group_member" "i-am-admin" {
   member_id = data.databricks_service_principal.sp.id
 }
 
+resource "databricks_user_role" "account_admin" {
+  provider = databricks.azure_account
+  user_id  = data.databricks_service_principal.sp.id
+  role     = "account_admin"
+}
+
 # resource "databricks_volume" "this" {
 #   name             = "checkpoint_locations_table"
 #   catalog_name     = local.catalog_name
