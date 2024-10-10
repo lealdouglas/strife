@@ -82,22 +82,22 @@ resource "databricks_group_member" "i-am-admin" {
   member_id = data.databricks_service_principal.sp.id
 }
 
-resource "databricks_volume" "this" {
-  name             = "checkpoint_locations_table"
-  catalog_name     = local.catalog_name
-  schema_name      = "bronze"
-  volume_type      = "EXTERNAL"
-  storage_location = format("abfss://%s@%s.dfs.core.windows.net/", local.container_catalog, local.storage_account)
-  comment          = "this volume is managed by terraform"
-}
+# resource "databricks_volume" "this" {
+#   name             = "checkpoint_locations_table"
+#   catalog_name     = local.catalog_name
+#   schema_name      = "bronze"
+#   volume_type      = "EXTERNAL"
+#   storage_location = format("abfss://%s@%s.dfs.core.windows.net/", local.container_catalog, local.storage_account)
+#   comment          = "this volume is managed by terraform"
+# }
 
-# Concede permissões no catálogo de desenvolvimento
-# Grants on dev catalog
-resource "databricks_grants" "volume" {
-  catalog = databricks_volume.this.id
-  grant {
-    principal  = "data_engineer"
-    privileges = ["WRITE_VOLUME", "READ_VOLUME"]
-  }
-  depends_on = [databricks_volume.this]
-}
+# # Concede permissões no catálogo de desenvolvimento
+# # Grants on dev catalog
+# resource "databricks_grants" "volume" {
+#   catalog = databricks_volume.this.id
+#   grant {
+#     principal  = "data_engineer"
+#     privileges = ["WRITE_VOLUME", "READ_VOLUME"]
+#   }
+#   depends_on = [databricks_volume.this]
+# }
