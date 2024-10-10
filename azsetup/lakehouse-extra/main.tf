@@ -56,18 +56,12 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
-# Cria uma localização externa para ser usada como armazenamento raiz pelo catálogo de desenvolvimento
-# Create an external location to be used as root storage by dev catalog
-data "databricks_external_location" "dev_location" {
-  name = "dtmaster-catalog-external-location"
-}
-
 resource "databricks_volume" "this" {
   name             = "checkpoint_locations_table"
   catalog_name     = local.catalog_name
   schema_name      = "bronze"
   volume_type      = "EXTERNAL"
-  storage_location = data.databricks_external_location.dev_location.url
+  storage_location = format("abfss://%s@%s.dfs.core.windows.net/", local.container_catalog, local.storage_account)
   comment          = "this volume is managed by terraform"
 }
 
