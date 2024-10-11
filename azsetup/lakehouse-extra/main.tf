@@ -56,53 +56,39 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
-# Obtém o principal de serviço do Databricks
-# Get Databricks service principal
+
 # data "databricks_service_principal" "sp" {
-#   application_id = var.azure_client_id
+#   display_name = var.azure_client_id
 # }
 
-data "databricks_service_principal" "sp" {
-  display_name = var.azure_client_id
-}
 
-
-data "databricks_group" "data_engineer" {
-  display_name = "data_engineer"
-}
-
-# data "databricks_user" "me" {
-#   user_name  = var.user_principal_name
-#   depends_on = [databricks_mws_permission_assignment.workspace_user_groups]
+# data "databricks_group" "data_engineer" {
+#   display_name = "data_engineer"
 # }
 
-resource "databricks_group_member" "i-am-admin" {
-  provider  = databricks.azure_account
-  group_id  = data.databricks_group.data_engineer.id
-  member_id = data.databricks_service_principal.sp.id
-}
-
-resource "databricks_user_role" "account_admin" {
-  user_id = data.databricks_service_principal.sp.id
-  role    = "account_admin"
-}
-
-# resource "databricks_volume" "this" {
-#   name             = "checkpoint_locations_table"
-#   catalog_name     = local.catalog_name
-#   schema_name      = "bronze"
-#   volume_type      = "EXTERNAL"
-#   storage_location = format("abfss://%s@%s.dfs.core.windows.net/", local.container_catalog, local.storage_account)
-#   comment          = "this volume is managed by terraform"
+# resource "databricks_group_member" "i-am-admin" {
+#   provider  = databricks.azure_account
+#   group_id  = data.databricks_group.data_engineer.id
+#   member_id = data.databricks_service_principal.sp.id
 # }
 
-# # Concede permissões no catálogo de desenvolvimento
-# # Grants on dev catalog
-# resource "databricks_grants" "volume" {
-#   catalog = databricks_volume.this.id
-#   grant {
-#     principal  = "data_engineer"
-#     privileges = ["WRITE_VOLUME", "READ_VOLUME"]
-#   }
-#   depends_on = [databricks_volume.this]
-# }
+resource "databricks_volume" "this" {
+  provider         = databricks.azure_account
+  name             = "checkpoint_locations_table"
+  catalog_name     = local.catalog_name
+  schema_name      = "bronze"
+  volume_type      = "EXTERNAL"
+  storage_location = format("abfss://%s@%s.dfs.core.windows.net/", local.container_catalog, local.storage_account)
+  comment          = "this volume is managed by terraform"
+}
+
+# Concede permissões no catálogo de desenvolvimento
+# Grants on dev catalog
+resource "databricks_grants" "volume" {
+  catalog = databricks_volume.this.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["WRITE_VOLUME", "READ_VOLUME"]
+  }
+  depends_on = [databricks_volume.this]
+}
