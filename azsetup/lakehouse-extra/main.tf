@@ -73,7 +73,6 @@ provider "databricks" {
 # }
 
 resource "databricks_volume" "this" {
-  provider         = databricks.azure_account
   name             = "checkpoint_locations_table"
   catalog_name     = local.catalog_name
   schema_name      = "bronze"
