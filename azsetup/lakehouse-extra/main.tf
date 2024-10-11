@@ -73,11 +73,11 @@ provider "databricks" {
 # }
 
 resource "databricks_volume" "this" {
-  name             = "checkpoint_locations_table"
+  name             = "volume_checkpoint_locations"
   catalog_name     = local.catalog_name
   schema_name      = "bronze"
   volume_type      = "EXTERNAL"
-  storage_location = format("abfss://%s@%s.dfs.core.windows.net/bronze/", local.container_catalog, local.storage_account)
+  storage_location = format("abfss://%s@%s.dfs.core.windows.net/volume_checkpoint_locations/", local.container_catalog, local.storage_account)
   comment          = "this volume is managed by terraform"
 }
 
