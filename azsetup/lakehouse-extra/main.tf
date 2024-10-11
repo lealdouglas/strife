@@ -72,7 +72,7 @@ provider "databricks" {
 #   member_id = data.databricks_service_principal.sp.id
 # }
 
-resource "" "this" {
+resource "databricks_volume" "this" {
   name             = "checkpoint_locations_table"
   catalog_name     = local.catalog_name
   schema_name      = "bronze"
