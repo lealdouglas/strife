@@ -57,20 +57,20 @@ provider "databricks" {
 }
 
 
-# data "databricks_service_principal" "sp" {
-#   display_name = var.azure_client_id
-# }
+data "databricks_service_principal" "sp" {
+  display_name = var.azure_client_id
+}
 
 
-# data "databricks_group" "data_engineer" {
-#   display_name = "data_engineer"
-# }
+data "databricks_group" "data_engineer" {
+  display_name = "data_engineer"
+}
 
-# resource "databricks_group_member" "i-am-admin" {
-#   provider  = databricks.azure_account
-#   group_id  = data.databricks_group.data_engineer.id
-#   member_id = data.databricks_service_principal.sp.id
-# }
+resource "databricks_group_member" "i-am-admin" {
+  provider  = databricks.azure_account
+  group_id  = data.databricks_group.data_engineer.id
+  member_id = data.databricks_service_principal.sp.id
+}
 
 resource "databricks_volume" "this" {
   name             = "volume_checkpoint_locations"
