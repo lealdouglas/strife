@@ -109,7 +109,7 @@ data "azurerm_databricks_workspace" "this" {
 # Cria um namespace do Event Hub
 # Create an Event Hub namespace
 resource "azurerm_eventhub_namespace" "this" {
-  name                = "eeeee"
+  name                = "novoeventhub"
   location            = var.location
   resource_group_name = local.resource_group
   sku                 = "Standard"
