@@ -50,6 +50,28 @@ provider "databricks" {
   auth_type           = "azure-client-secret"
 }
 
+resource "databricks_secret_scope" "app" {
+  name = "strife-secret-scope"
+}
+
+resource "databricks_secret" "azure_client_secret" {
+  key          = "azure_client_secret"
+  string_value = var.azure_client_secret
+  scope        = databricks_secret_scope.app.id
+}
+
+resource "databricks_secret" "azure_client_id" {
+  key          = "azure_client_id"
+  string_value = var.azure_client_id
+  scope        = databricks_secret_scope.app.id
+}
+
+resource "databricks_secret" "azure_tenant_id" {
+  key          = "azure_tenant_id"
+  string_value = var.azure_tenant_id
+  scope        = databricks_secret_scope.app.id
+}
+
 # Obtém o menor tipo de nó disponível
 # Get the smallest available node type
 data "databricks_node_type" "smallest" {
@@ -76,6 +98,12 @@ resource "databricks_cluster" "this" {
     "spark.databricks.cluster.profile" : "singleNode"
     "spark.master" : "local[*]"
     "spark.databricks.sql.initial.catalog.namespace" : local.catalog_name
+  }
+
+  spark_env_vars = {
+    "ARM_CLIENT_SECRET" = databricks_secret.azure_client_secret.config_reference
+    "ARM_CLIENT_ID"     = databricks_secret.azure_client_id.config_reference
+    "ARM_TENANT_ID"     = databricks_secret.azure_tenant_id.config_reference
   }
 
   custom_tags = {

@@ -125,3 +125,8 @@ resource "azurerm_eventhub_namespace" "this" {
   tags                = local.tags
 }
 
+resource "azurerm_role_assignment" "eventhub" {
+  scope                = azurerm_eventhub_namespace.this.id
+  role_definition_name = "Azure Event Hubs Data Sender"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
