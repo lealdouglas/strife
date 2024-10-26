@@ -89,5 +89,5 @@ resource "databricks_grants" "volume" {
     principal  = "data_engineer"
     privileges = ["WRITE_VOLUME", "READ_VOLUME"]
   }
-  depends_on = [databricks_volume.this]
+  depends_on = [databricks_volume.this, databricks_group_member.i-am-admin]
 }
