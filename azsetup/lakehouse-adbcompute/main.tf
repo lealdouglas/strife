@@ -88,7 +88,7 @@ data "databricks_spark_version" "latest_lts" {
 # Create a Databricks cluster
 resource "databricks_cluster" "this" {
   cluster_name            = "cluster-single-dtm-${local.suffix_concat}"
-  spark_version           = "14.3.x-scala2.12" #data.databricks_spark_version.latest_lts.id
+  spark_version           = "15.4.x-scala2.12" #data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 10
   data_security_mode      = "SINGLE_USER"
