@@ -81,6 +81,15 @@ resource "databricks_volume" "this" {
   comment          = "this volume is managed by terraform"
 }
 
+resource "databricks_volume" "silver" {
+  name             = "volume_checkpoint_locations_silver"
+  catalog_name     = local.catalog_name
+  schema_name      = "silver"
+  volume_type      = "EXTERNAL"
+  storage_location = format("abfss://%s@%s.dfs.core.windows.net/volume_checkpoint_locations_silver/", local.container_catalog, local.storage_account)
+  comment          = "this volume is managed by terraform"
+}
+
 # Concede permissões no catálogo de desenvolvimento
 # Grants on dev catalogdatabricks_volume
 resource "databricks_grants" "volume" {
@@ -90,4 +99,15 @@ resource "databricks_grants" "volume" {
     privileges = ["WRITE_VOLUME", "READ_VOLUME"]
   }
   depends_on = [databricks_volume.this, databricks_group_member.i-am-admin]
+}
+
+# Concede permissões no catálogo de desenvolvimento
+# Grants on dev catalogdatabricks_volume
+resource "databricks_grants" "volume_silver" {
+  volume = databricks_volume.silver.id
+  grant {
+    principal  = "data_engineer"
+    privileges = ["WRITE_VOLUME", "READ_VOLUME"]
+  }
+  depends_on = [databricks_volume.silver, databricks_group_member.i-am-admin]
 }
